@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>405 Method Not Allowed | Invalid Request</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-main: #121212;
+            --dp-06: #1e1e1e;
+            --dp-12: #2c2c2c;
+            --dp-24: #333333;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent-color: #007aff;
+            --method-color: #a56eff; 
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .error-container {
+            text-align: center;
+            background: var(--dp-06);
+            padding: 50px 40px;
+            border-radius: 20px;
+            border: 1px solid var(--dp-24);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.6);
+            max-width: 450px;
+            width: 90%;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+
+        .error-icon {
+            font-size: 70px;
+            color: var(--method-color);
+            margin-bottom: 20px;
+            animation: shake 2.5s infinite;
+        }
+
+        .error-code {
+            font-size: 70px;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 2px;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        .error-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 15px 0 20px 0;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .error-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 35px;
+            padding: 0 10px;
+        }
+
+
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: var(--accent-color);
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            width: 80%;
+        }
+
+        .btn-home:hover {
+            background-color: #005bb5;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 122, 255, 0.4);
+        }
+
+        /* Animations */
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            10%, 30%, 50% { transform: rotate(-10deg); }
+            20%, 40% { transform: rotate(10deg); }
+            60% { transform: rotate(0deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="error-container">
+        <div class="error-icon">
+            <i class="far fa-hand-paper"></i>
+        </div>
+        
+        <h1 class="error-code">405</h1>
+        <h2 class="error-title">Method Not Allowed</h2>
+        
+        <p class="error-desc">
+            The request method you used is not supported for this page. Please try navigating using the proper buttons or links.
+        </p>
+        
+        <a href="/" class="btn-home">
+            <i class="fas fa-home"></i> Return to Home
+        </a>
+    </div>
+
+</body>
+</html>

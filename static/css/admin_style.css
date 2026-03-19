@@ -1,0 +1,907 @@
+/* Dark Theme Base Colors */
+:root {
+    --bg-main: #121212;
+    --bg-sidebar: #1e1e1e;
+    --bg-card: #2c2c2c;
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --active-bg: #ffffff; /* Active tab background */
+    --active-text: #000000; /* Active tab text */
+    
+    /* අලුතින් එකතු කළ වර්ණ */
+    --bg-input: #2c2c2c;  
+    --border-color: #444444;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body.dark-theme {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.dashboard-container {
+    display: flex;
+    width: 100%;
+}
+
+/* Sidebar Styling (ඔබගේ අනෙකුත් පේජ් වලටත් පොදුවේ මෙයම භාවිත කළ හැක) */
+.sidebar {
+    width: 300px;
+    background-color: var(--bg-sidebar);
+    padding: 20px 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar .logo {
+    margin-bottom: 40px;
+    font-size: 24px;
+}
+
+/* Sidebar එකේ menu links වලට Flexbox ලබා දීම (Badge එක කෙළවරින් තැබීමට) */
+.menu a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.menu a:hover, .menu a.active {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    font-weight: bold;
+}
+/* අලුතින් එක් කරන Notification Badge එක */
+.notif-badge {
+    background-color: #ff3b30;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.sidebar-bottom { margin-top: auto; }
+.sidebar-bottom a {
+    display: block;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 10px 0;
+}
+
+/* Main Content Area */
+.content {
+    flex: 1;
+    padding: 30px 40px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Top Header Bar */
+.top-header {
+    background-color: var(--bg-sidebar);
+    padding: 15px 30px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.top-header h2 { margin: 0; font-size: 22px; }
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    background-color: #555;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Top 4 Stats Cards Grid */
+.stats-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background-color: var(--bg-sidebar);
+    padding: 25px 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+.card h3 {
+    margin: 0 0 10px 0;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.card p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.divider {
+    border: none;
+    height: 1px;
+    background-color: #444;
+    margin: 30px 0;
+}
+
+/* =========================================================
+   Manage Job Seekers Page Styles 
+   ========================================================= */
+
+/* Add User Section */
+.add-user-section {
+    background-color: var(--bg-sidebar);
+    border-radius: 10px;
+    padding: 20px 30px;
+    margin-bottom: 30px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-input);
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.section-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.avatar-small {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #555;
+}
+
+.add-user-form {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.image-upload-box {
+    width: 120px;
+    height: 120px;
+    background-color: var(--bg-input);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.form-inputs {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+}
+
+.input-group label {
+    width: 100px;
+    color: var(--text-secondary);
+}
+
+.input-group input {
+    flex: 1;
+    max-width: 300px;
+    background-color: var(--bg-main);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 10px 15px;
+    border-radius: 20px;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: #777;
+}
+
+.form-actions {
+    align-self: flex-end;
+}
+
+.btn-add {
+    background-color: var(--text-secondary);
+    color: var(--bg-main);
+    border: none;
+    padding: 10px 25px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-add:hover {
+    background-color: var(--text-primary);
+}
+
+/* All Users Section */
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header-row h3 {
+    font-size: 22px;
+    margin: 0;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-sidebar);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 5px 15px;
+}
+
+.search-box input {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    padding: 8px;
+    outline: none;
+}
+
+.search-box .search-icon {
+    color: var(--text-secondary);
+}
+
+/* Users Grid */
+.users-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.user-card {
+    background-color: var(--bg-sidebar);
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--bg-input);
+    margin-right: 15px;
+    object-fit: cover;
+}
+
+.user-name {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.actions {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.actions span {
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+}
+
+.actions span:hover {
+    color: var(--text-primary);
+}
+
+/* =========================================================
+   Delete Confirmation Modal (Popup) Styles 
+   ========================================================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* පසුබිම අඳුරු කිරීම */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: var(--bg-sidebar);
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 400px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    border: 1px solid var(--border-color);
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    color: #ff4d4d; /* රතු පැහැති අවවාදාත්මක වර්ණය */
+    margin-bottom: 15px;
+}
+
+.modal-content p {
+    color: var(--text-secondary);
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-danger {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: #ff1a1a;
+}
+
+.btn-secondary {
+    background-color: #555;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: #777;
+}
+
+
+/* =========================================================
+   Manage Employers - Sub Pages Styles
+   ========================================================= */
+
+/* Back Arrow Header */
+.back-header {
+    background-color: var(--bg-sidebar); /* පින්තූරයේ ලෙස ලා අළු පැහැති පසුබිම */
+    color: var(--text-primary);
+    padding: 15px 30px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.back-btn {
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 15px;
+    transition: transform 0.2s;
+}
+
+.back-btn:hover {
+    transform: scale(1.1);
+}
+
+.back-header h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: normal;
+}
+
+/* Employer Logo Grid (Square Boxes) */
+.employer-logo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+.employer-box {
+    background-color: var(--text-secondary); /* ලා අළු පැහැති කොටුව */
+    aspect-ratio: 1 / 1; /* සමචතුරස්‍ර හැඩය තබාගැනීමට */
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    color: var(--active-text);
+    font-weight: bold;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.employer-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.employer-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.employer-box .placeholder-text {
+    font-size: 16px;
+    text-align: center;
+    padding: 10px;
+}
+
+
+/* =========================================================
+   Manage Employers - Hover & Detail Page Styles
+   ========================================================= */
+
+/* Logo Box Hover Effect */
+.employer-box {
+    position: relative; /* Hover overlay එක සඳහා */
+    text-decoration: none; /* Link underline ඉවත් කිරීම */
+}
+
+.hover-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    text-align: center;
+    padding: 10px;
+}
+
+.employer-box:hover .hover-overlay {
+    opacity: 1; /* Mouse එක ගෙන ගිය විට පෙන්නුම් කරයි */
+}
+
+/* Detail Card Styles */
+.employer-detail-card {
+    background-color: var(--bg-sidebar);
+    padding: 30px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 600px;
+}
+
+.detail-top-row {
+    display: flex;
+    gap: 20px;
+}
+
+.detail-logo-box {
+    width: 150px;
+    height: 150px;
+    background-color: var(--text-secondary);
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    color: var(--bg-main);
+    font-weight: bold;
+}
+
+.detail-logo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detail-top-inputs {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.detail-two-cols {
+    display: flex;
+    gap: 20px;
+}
+
+.detail-two-cols .input-group {
+    flex: 1;
+}
+
+.input-group.full-width input {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Input Fields (Matching the image design for both Detail and Add pages) */
+.employer-detail-card input {
+    background-color: var(--bg-card); /* අඳුරු කොටුවේ වර්ණය */
+    border: 1px solid var(--border-color); /* ලාවට පෙනෙන Border එකක් */
+    color: var(--text-primary); /* සුදු පැහැති අකුරු */
+    padding: 15px 20px;
+    border-radius: 20px; /* රවුම් වූ දාර */
+    font-size: 14px;
+    font-weight: bold;
+    width: 100%;
+    outline: none; /* Focus කළ විට එන පෙරනිමි border එක ඉවත් කිරීම */
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.employer-detail-card input::placeholder {
+    color: var(--text-secondary); /* අළු පැහැති Placeholder අකුරු */
+    opacity: 0.8;
+}
+
+/* Form එකේ Focus කළ විට සිදුවන වෙනස (Edit සහ Add අවස්ථා දෙකටම) */
+.employer-detail-card input:focus {
+    background-color: var(--bg-main);
+    border-color: #888;
+}
+
+/* Action Buttons */
+.detail-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.btn-reject, .btn-verify {
+    padding: 12px 30px;
+    border-radius: 20px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-reject {
+    background-color: var(--text-secondary);
+    color: var(--bg-main);
+}
+
+.btn-verify {
+    background-color: var(--text-primary);
+    color: var(--bg-main);
+}
+
+.btn-reject:hover, .btn-verify:hover {
+    opacity: 0.8;
+}
+
+
+/* =========================================================
+   Add Employer Box Styles (Verified Page)
+   ========================================================= */
+.add-employer-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-sidebar);
+    color: var(--text-primary); /* අකුරු සහ අයිකනය අඳුරු පැහැයෙන් පෙන්වීමට */
+    text-decoration: none;
+    border: 2px dashed var(--text-secondary); /* විශේෂ කොටුවක් ලෙස පෙන්වීමට */
+}
+
+
+
+.add-employer-box .add-icon {
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    line-height: 1;
+}
+
+.add-employer-box .add-text {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.add-employer-box .hover-overlay {
+    display: none; /* Add Employer බොත්තමට Hover effect එකක් අවශ්‍ය නැත */
+}
+
+/* =========================================================
+   Verified Employer Details & Job Grid
+   ========================================================= */
+
+/* Make inputs look editable on focus */
+.editable-card input:focus {
+    outline: 2px solid #888;
+    background-color: var(--bg-main);
+}
+
+/* Jobs Grid Styling (Two Columns) */
+.employer-jobs-section {
+    margin-top: 30px;
+}
+
+.jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.job-mini-card {
+    background-color: var(--bg-sidebar); /* අළු පැහැති පසුබිම */
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    color: var(--text-primary);
+}
+
+.job-mini-logo {
+    background-color: #a6a6a6; /* ලෝගෝ කොටුවේ වර්ණය */
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.job-mini-info {
+    flex: 1;
+    padding: 0 15px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.job-mini-actions {
+    padding: 0 15px;
+    display: flex;
+    gap: 12px;
+}
+
+.job-mini-actions span {
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: color 0.2s;
+}
+
+.job-mini-actions span:hover {
+    color: #000;
+}
+
+/* Quill Editor Custom Styles for Dark Theme */
+        .editor-container {
+            margin-top: 25px;
+            background: var(--bg-card); /* කොටුවේ පසුබිම */
+            border-radius: 8px;
+            overflow: hidden; /* Toolbar සහ Editor එක වටා ඇති Border එක රවුම් කිරීමට */
+            border: 1px solid var(--border-color);
+        }
+
+        .editor-container label {
+            display: block;
+            padding: 12px 15px;
+            background: var(--bg-sidebar); /* Label එකට වෙනම පසුබිමක් */
+            color: var(--text-primary);
+            font-weight: bold;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border-color);
+            margin: 0;
+        }
+
+        /* Toolbar (උඩින් ඇති බොත්තම් පේළිය) */
+        .ql-toolbar.ql-snow {
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            background: #2a2a2a; /* අඳුරු අළු පැහැයක් */
+            padding: 10px;
+        }
+
+        /* Toolbar හි ඇති බොත්තම් වල අයිකන් සුදු පැහැ කිරීම */
+        .ql-snow .ql-stroke { stroke: #d1d1d1; }
+        .ql-snow .ql-fill { fill: #d1d1d1; }
+        .ql-snow .ql-picker { color: #d1d1d1; }
+
+        /* Toolbar හි Hover කරන විට වර්ණය වෙනස් වීම */
+        .ql-snow .ql-picker:hover .ql-stroke,
+        .ql-snow button:hover .ql-stroke { stroke: #ffffff; }
+
+        /* Editor Area (අකුරු ලියන කොටස) */
+        .quill-editor {
+            height: 180px; /* උස තරමක් වැඩි කර ඇත */
+            border: none !important; /* Default border එක ඉවත් කිරීම */
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 15px;
+            padding: 5px;
+        }
+
+        /* Editor එක ඇතුළේ ඇති Content (Lists, Paragraphs) */
+        .ql-editor {
+            padding: 15px;
+            line-height: 1.6;
+        }
+
+        .ql-editor.ql-blank::before {
+            color: #777; /* Placeholder එකේ වර්ණය */
+            font-style: italic;
+        }
+        
+        .ql-editor ul, .ql-editor ol {
+            padding-left: 20px; /* List items ටිකක් දකුණට කිරීම */
+        }
+
+/* =========================================================
+   Dashboard Charts Area Styles 
+   ========================================================= */
+.charts-area {
+    display: flex;
+    gap: 30px;
+    margin-top: 10px;
+    height: 350px; /* ප්‍රස්තාර වල උස පාලනය කිරීම */
+}
+
+.chart-box {
+    flex: 1;
+    background-color: var(--bg-sidebar);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-box h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+    text-align: center;
+    font-size: 18px;
+}
+
+/* Canvas එක නිවැරදිව පෙන්වීමට අලුතින් එක්කළ Container එක */
+.canvas-container {
+    position: relative;
+    flex: 1;
+    width: 100%;
+}
+
+
+/* =========================================================
+   Messages & Notifications Styles 
+   ========================================================= */
+.messages-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 900px;
+}
+
+.notification-card {
+    background-color: var(--bg-sidebar);
+    border-left: 5px solid #444444; /* සාමාන්‍ය Border එක */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.notification-card:hover {
+    transform: translateX(5px);
+}
+
+/* කියවපු නැති (Unread) මැසේජ් වලට වෙනම පාටක් (Optional) */
+.notification-card.unread {
+    border-left-color: #007aff; /* නිල් පැහැති Border එක */
+}
+
+.notif-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.notif-subject {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--text-primary);
+}
+
+.notif-date {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.notif-sender {
+    font-size: 14px;
+    color: #a1a1aa;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.notif-body {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    white-space: pre-wrap; /* මැසේජ් එකේ තියෙන පේළි (Line breaks) ඒ විදිහටම තියාගන්න */
+}
+
+
+
+/* =========================================================
+   Message Delete Button Styles 
+   ========================================================= */
+.btn-delete-msg {
+    background-color: rgba(255, 59, 48, 0.1);
+    color: #ff3b30;
+    border: 1px solid rgba(255, 59, 48, 0.2);
+    padding: 6px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-delete-msg:hover {
+    background-color: #ff3b30;
+    color: white;
+}

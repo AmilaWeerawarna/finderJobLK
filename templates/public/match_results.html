@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block content %}
+
+{% if results and results|length > 0 %}
+
+  <main class="recommendations-page">
+    <div class="recommendations-wrap">
+
+      <div class="recommendations-panel">
+        <div class="job-grid-3">
+
+           {% for r in results %}
+            <a href="{{ url_for('match.job_details', job_id=r.job_id , score=r.score) }}" style="text-decoration: none; color: inherit;">
+              <article class="job-card-light" data-score="{{r.score}}">
+                <div class="job-left">
+                  
+                  <div class="company-logo-light">
+                    {% if r.job_image %}
+                        <img src="{{ url_for('static', filename='company_logos/' + r.job_image) }}" alt="Company Logo">
+                    {% else %}
+                        <img src="https://cdn-icons-png.flaticon.com/512/10841/10841929.png" alt="Default Logo">
+                    {% endif %}
+                  </div>
+                  
+                  <div class="job-meta">
+                    <h3 class="job-title-light">{{ r.job_title }}</h3>
+                    <div class="job-sub" style="font-weight: 500; color: #555; margin-bottom: 5px;">{{ r.company_name }}</div>
+                    
+                    <div class="job-row">
+                        <span class="job-chip"><i class="fas fa-map-marker-alt"></i> {{ r.location }}</span>
+                        <span class="job-chip"><i class="fas fa-briefcase"></i> {{ r.employment_type }}</span>
+                        <span class="job-chip"><i class="fas fa-tags"></i> {{ r.category }}</span>
+                    </div>
+                    
+                    <div class="job-row" style="margin-top: 8px;">
+                        <span class="salary-pill-light"><i class="fas fa-money-bill-wave"></i> {{ r.salary }}</span>
+                        <span class="job-time"><i class="fas fa-calendar-times"></i> Ends: {{ r.end_date }}</span>
+                    </div>
+                  </div>
+                  
+                </div>
+                
+                <div class="score-circle-light"><span class="score-text">{{ r.score }}%</span></div>
+              </article>
+            </a>
+          {% endfor %}
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+{% else %}
+  <div class="no-results-box">
+    <p>No matches found. Try uploading a different CV.</p>
+    {% if meta %}
+      <p style="font-size: 13px; color:#666; margin-top: 10px;">
+        Debug: posts={{ meta.job_posts_fetched }}, embeddings={{ meta.jobs_with_embeddings }}
+      </p>
+    {% endif %}
+  </div>
+
+{% endif %}
+
+<script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+</script>
+
+{% endblock %}

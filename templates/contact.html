@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<section class="auth-container" style="padding-top: 150px;">
+    <div class="login-card" style="max-width: 600px;">
+        <div class="auth-logo-box">
+            <i class="fas fa-envelope" style="color: var(--text-primary);"></i>
+        </div>
+        <h2>Contact Us</h2>
+        <p class="auth-subtitle">Have a question or feedback? We'd love to hear from you.</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('contact_us') }}" method="POST" class="auth-form" style="text-align: left;">
+            <div class="input-group">
+                <input type="text" name="name" placeholder="Your Full Name" required>
+            </div>
+            
+            <div class="input-group">
+                <input type="email" name="email" placeholder="Your Email Address" required>
+            </div>
+
+            <div class="input-group">
+                <input type="text" name="subject" placeholder="Subject (Optional)">
+            </div>
+
+            <div class="input-group">
+                <textarea name="message" placeholder="Type your message here..." rows="5" required 
+                          style="width: 100%; padding: 14px 18px; background: var(--dp-24); border: 1px solid var(--dp-12); 
+                                 border-radius: 12px; color: var(--text-primary); font-family: inherit; outline: none; 
+                                 transition: border-color 0.3s; resize: vertical;"></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary btn-block" style="margin-top: 20px;">
+                Send Message
+            </button>
+        </form>
+    </div>
+</section>
+
+<style>
+    textarea:focus {
+        border-color: var(--accent-hover) !important;
+    }
+</style>
+
+{% endblock %}

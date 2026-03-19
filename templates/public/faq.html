@@ -1,0 +1,236 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+    .faq-container {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 0 20px;
+        min-height: 60vh;
+        margin-bottom: 100px;
+    }
+
+    .faq-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .faq-header h1 {
+        font-size: 38px;
+        color: var(--text-primary, #fff);
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+
+    .faq-header p {
+        color: var(--text-secondary, #b3b3b3);
+        font-size: 16px;
+    }
+
+    /* Accordion Styles */
+    .faq-item {
+        background: var(--dp-06, #1e1e1e);
+        border: 1px solid var(--dp-24, #333);
+        border-radius: 12px;
+        margin-bottom: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .faq-item.active {
+        border-color: var(--accent-color, #007aff);
+        box-shadow: 0 4px 15px rgba(0, 122, 255, 0.1);
+    }
+
+    .faq-question {
+        width: 100%;
+        text-align: left;
+        padding: 20px 25px;
+        background: none;
+        border: none;
+        color: var(--text-primary, #fff);
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background 0.3s ease;
+    }
+
+    .faq-question:hover {
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    .faq-question i {
+        color: var(--accent-color, #007aff);
+        transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-question i {
+        transform: rotate(180deg);
+    }
+
+    .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease;
+        background: var(--dp-04, #121212);
+    }
+
+    .faq-answer-content {
+        padding: 0 25px 25px 25px;
+        color: var(--text-secondary, #b3b3b3);
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    /* Category Tabs */
+    .faq-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 40px;
+    }
+
+    .faq-tab-btn {
+        padding: 10px 20px;
+        background: var(--dp-12, #2c2c2c);
+        color: var(--text-secondary, #b3b3b3);
+        border: 1px solid var(--dp-24, #333);
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .faq-tab-btn.active, .faq-tab-btn:hover {
+        background: var(--accent-color, #007aff);
+        color: #fff;
+        border-color: var(--accent-color, #007aff);
+    }
+</style>
+
+<div class="faq-container">
+    
+    <div class="faq-header">
+        <h1>Frequently Asked Questions</h1>
+        <p>Find answers to common questions about our AI Job Matching platform.</p>
+    </div>
+
+    <div class="faq-tabs">
+        <button class="faq-tab-btn active" onclick="filterFAQ('all', this)">All</button>
+        <button class="faq-tab-btn" onclick="filterFAQ('general', this)">General</button>
+        <button class="faq-tab-btn" onclick="filterFAQ('job_seeker', this)">For Job Seekers</button>
+        <button class="faq-tab-btn" onclick="filterFAQ('employer', this)">For Employers</button>
+    </div>
+
+    <div class="faq-list">
+        
+        <div class="faq-item" data-category="general">
+            <button class="faq-question">
+                How does the AI CV matching work? 
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    Our platform uses advanced Natural Language Processing (NLP) to read your uploaded PDF CV. It extracts your skills, experience, and education, and compares them against thousands of active job posts to calculate a real-time matching percentage score.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item" data-category="job_seeker">
+            <button class="faq-question">
+                What is the "Skill Gap Analysis" feature? 
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    When you view a job detail page, our AI compares the job's required skills with the skills found in your CV. If you are missing any crucial skills, the system highlights them as areas for improvement, helping you know exactly what to learn to get hired.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item" data-category="employer">
+            <button class="faq-question">
+                How can I post a job as an Employer? 
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    You can sign up as an Employer. Once you complete your profile, our Admin team will verify your company details. After verification, you can access your Employer Dashboard and start posting jobs immediately.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item" data-category="employer">
+            <button class="faq-question">
+                How does candidate shortlisting work? 
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    Employers don't need to manually read every CV. When job seekers apply, our AI automatically ranks them based on their match score. Employers can view these shortlisted candidates directly from their dashboard.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item" data-category="general">
+            <button class="faq-question">
+                Is my data and CV kept secure? 
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-content">
+                    Yes, absolutely. Your personal details and uploaded CVs are securely stored in our encrypted database. Your CV is only shared with employers when you explicitly choose to apply for their job post.
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Accordion Logic
+    const faqQuestions = document.querySelectorAll('.faq-question');
+
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+            const currentItem = question.parentElement;
+            const isActive = currentItem.classList.contains('active');
+
+            // Close all other items
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+                item.querySelector('.faq-answer').style.maxHeight = null;
+            });
+
+            // If the clicked item wasn't active, open it
+            if (!isActive) {
+                currentItem.classList.add('active');
+                const answer = currentItem.querySelector('.faq-answer');
+                answer.style.maxHeight = answer.scrollHeight + "px";
+            }
+        });
+    });
+
+
+    function filterFAQ(category, btn) {
+
+        document.querySelectorAll('.faq-tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        document.querySelectorAll('.faq-item').forEach(item => {
+            const itemCategory = item.getAttribute('data-category');
+            
+            if (category === 'all' || itemCategory === category) {
+                item.style.display = 'block'; 
+            } else {
+                item.style.display = 'none';  
+            }
+        });
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,1851 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+/* =========================================================
+   UPDATED COLOR PALETTE FOR GLOW BACKGROUND
+   ========================================================= */
+:root {
+    /* අඳුරු පසුබිම - Glow orbs හොඳින් කැපී පෙනීමට තරමක් තද පැහැයක් */
+    --dp-00: #09090b; 
+
+    /* UI Elements සඳහා විනිවිද පෙනෙන (Translucent) වර්ණ */
+    /* මෙමගින් පසුබිම් Glow එක කාඩ් හරහා මෘදුව පෙනේ */
+    --dp-02: rgba(24, 24, 27, 0.6);  /* Low elevation */
+    --dp-04: rgba(24, 24, 27, 0.7);  /* Header, Search Box */
+    --dp-06: rgba(39, 39, 42, 0.7);  /* Job Cards, Dashboard Cards */
+    
+    /* Inputs සහ Tags සඳහා */
+    --dp-12: rgba(63, 63, 70, 0.5);  
+    
+    /* Borders සහ Hover Effect සඳහා සුදු පැහැති Glass effect එකක් */
+    --dp-24: rgba(255, 255, 255, 0.08); 
+
+    /* Text Colors */
+    --text-primary: #fafafa;
+    --text-secondary: #a1a1aa;
+            
+    /* Accent Colors (Green - ඔයාගේ පරණ වර්ණයම තබා ඇත) */
+    --accent-color: #23b95d; 
+    --accent-hover: #10e060;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--dp-00);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px; /* Offset for the fixed header height */
+}
+
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 64px;
+  /* New properties for fixed positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: transparent; /* Transparent by default */
+  transition: all 0.3s ease; /* Smooth transition for background and padding */
+}
+
+::placeholder{
+  color: var(--text-secondary);
+}
+
+/* This class is toggled by JavaScript */
+header.scrolled {
+  background: var(--dp-04) ; /* Matches your dark theme */
+  padding: 15px 64px; /* Slightly shrink the header on scroll */
+  backdrop-filter: blur(10px); /* Modern glass effect */
+}
+
+/* Adjust Hero section to prevent content from hiding under the fixed header */
+.hero {
+  text-align: center;
+  padding-top: 120px; /* Increased from 100px to account for fixed header */
+  padding-bottom: 20px;
+  flex: 1;
+}
+
+
+.logo { font-weight: 700; font-size: 20px; text-decoration: none; color: var(--text-primary); }
+
+nav {
+  display: flex;
+  gap: 28px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.nav-actions { display: flex; gap: 14px; align-items: center; }
+
+
+/* --- Hover Effects --- */
+nav span{
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+nav span a{
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+nav span:hover {
+  transform: translateY(-2px);
+}
+
+/* --- Mobile Menu Styles --- */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+@media (max-width: 768px) {
+  header.scrolled {
+    padding: 15px 32px;
+  }
+}
+  body {
+    padding-top: 70px;
+  }
+
+
+.menu-toggle span {
+  width: 25px;
+  height: 2px;
+  background-color: var(--text-primary);
+  transition: 0.3s;
+}
+
+.nav-mobile-actions { display: none; }
+
+@media (max-width: 768px) {
+  .menu-toggle { display: flex; }
+
+  /* Transform nav into a full-screen or slide-down menu */
+  nav {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Hidden by default */
+    width: 60%;
+    height: 100vh;
+    background: var(--dp-04);
+    flex-direction: column;
+    padding: 100px 40px;
+    transition: 0.4s ease-in-out;
+    z-index: 1000;
+    opacity: 1;
+  }
+
+  nav.active { right: 0; }
+
+  .nav-actions { display: none; } /* Hide desktop actions */
+  
+  .nav-mobile-actions { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 15px; 
+    margin-top: 20px; 
+  }
+
+
+  .hero h1 { font-size: 32px; }
+  
+  .stats-container { 
+    flex-direction: column; 
+    gap: 40px; 
+    margin-bottom: 60px;
+  }
+
+  /* Hamburger Animation when active */
+  .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .menu-toggle.active span:nth-child(2) { opacity: 0; }
+  .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+}
+
+.btn-outline {
+  padding: 8px 16px;
+  border-radius: 18px;
+  border: 1px solid var(--dp-24);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.btn-primary {
+  padding: 10px 20px;
+  border-radius: 18px;
+  border: none;
+  background-color: var(--accent-color);
+  color: var(--text-primary);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.hero {
+  text-align: center;
+  margin-top: 100px;
+  padding: 0 20px;
+  flex: 1;
+}
+
+.pill {
+  display: inline-block;
+  background-color: var(--dp-06);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--accent-color);
+  margin-bottom: 20px;
+}
+
+.hero h1 { font-size: 52px; line-height: 1.2; font-weight: 700; }
+
+.hero p {
+  margin-top: 16px;
+  color: var(--text-secondary);
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* =========================================================
+   NEW HERO SECTION (Image Reference)
+   ========================================================= */
+
+.upload-hero-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 1200px;
+    margin: 120px auto 80px;
+    padding: 0 40px;
+    gap: 100px;
+}
+
+/* Left Side - Text & Features */
+.upload-hero-left {
+    flex: 1;
+    text-align: left;
+}
+
+.upload-hero-left h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+.upload-hero-left .subtitle {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 35px;
+    color: var(--text-primary);
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 40px;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.icon-circle {
+    width: 24px;
+    height: 24px;
+    background-color: #007aff; /* පින්තූරයේ ඇති නිල් පැහැය */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-circle i {
+    color: #fff;
+    font-size: 12px;
+}
+
+.support-info {
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding-top: 20px;
+}
+
+/* Right Side - Upload Card */
+.upload-hero-right {
+    flex: 1;
+    width: 100%;
+    max-width: 500px;
+}
+
+.upload-card {
+    background-color: var(--dp-04);
+    border: 2px dashed var(--dp-24);
+    border-radius: 24px;
+    padding: 40px 30px;
+    text-align: center;
+    transition: border-color 0.3s ease;
+}
+
+.upload-card:hover {
+    border-color: var(--text-secondary);
+}
+
+.upload-card h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: var(--text-primary);
+}
+
+.upload-illustration img {
+    opacity: 0.9;
+    margin-bottom: 10px;
+}
+
+.drop-text {
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 25px 0;
+    color: var(--text-secondary);
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--dp-24);
+}
+
+.divider span {
+    padding: 0 15px;
+    font-size: 14px;
+}
+
+/* පින්තූරයේ ඇති Red Button එක */
+.btn-upload-red {
+    display: inline-block;
+    background-color: #ff3b30; /* රතු පැහැය */
+    color: #ffffff;
+    padding: 14px 30px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: auto;
+}
+
+.btn-upload-red:hover {
+    background-color: #e6352b;
+}
+
+.upload-hint {
+    margin-top: 25px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.file-name-display {
+    color: var(--accent-color);
+    font-weight: 600;
+    font-size: 15px;
+    background: var(--dp-12);
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    word-break: break-all;
+}
+
+/* Responsive */
+@media (max-width: 850px) {
+    .upload-hero-section {
+        flex-direction: column;
+        text-align: center;
+        margin-top: 60px;
+        gap: 50px;
+        min-width: 0px;
+    }
+    
+    .upload-hero-left h1 { font-size: 36px; }
+    
+    .feature-list li {
+        justify-content: center;
+    }
+}
+
+
+
+/* Statistics Section */
+.stats-container {
+    display: flex;
+    gap: 200px;
+    padding-bottom: 120px;
+}
+
+.stat-item { text-align: center; }
+.stat-label { display: block; color: var(--text-secondary); margin-bottom: 8px; }
+.stat-value { display: block; color: var(--text-primary); font-size: 42px; font-weight: 600; }
+
+/* --- Login Page Specific Styles --- */
+
+.auth-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 20px 60px; /* Space for fixed header */
+  margin-bottom: 80px;
+}
+
+.login-card {
+  background: var(--dp-06);
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.auth-logo-box {
+  width: 60px;
+  height: 60px;
+  background: var(--dp-24);
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  border-radius: 12px;
+}
+
+.login-card h2 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.auth-subtitle {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.auth-subtitle a {
+  color: var(--text-primary);
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+
+.auth-subtitle a:hover{
+  color: var(--accent-hover);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px 18px;
+  background: var(--dp-24);
+  border: 1px solid var(--dp-12);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+  border-color: var(--accent-hover);
+}
+
+.form-link-row {
+  text-align: right;
+}
+
+.forgot-password {
+  font-size: 13px;
+  color: var(--text-primary);
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+
+.forgot-password:hover {
+  color: var(--accent-hover);
+}
+
+.btn-block {
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+}
+
+/* --- Register Page Extensions --- */
+
+/* Allow the card to grow if employer fields are shown */
+.register-card {
+  max-width: 480px; 
+  transition: all 0.4s ease;
+}
+
+/* Styled Dropdown */
+.theme-select {
+  width: 100%;
+  padding: 14px 18px;
+  background:var(--dp-24);
+  border: 1px solid var(--dp-12);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-family: inherit;
+  outline: none;
+  appearance: none; /* Removes default arrow */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234f7cff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  cursor: pointer;
+}
+
+.extra-fields {
+  display: none; /* Controlled by JS */
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--dp-24);
+}
+
+/* --- Forgot Password Page Specifics --- */
+
+/* Reusing the auth-container flex layout for vertical centering */
+.forgot-card {
+  max-width: 420px; /* Slightly wider than login for readability */
+}
+
+/* Enhancing the subtitle for instruction clarity */
+.forgot-card .auth-subtitle {
+  line-height: 1.5;
+  margin-bottom: 25px;
+}
+
+/* --- Reset Password Page Specifics --- */
+
+/* Ensures the reset card follows the same width as the login card */
+.reset-card {
+  max-width: 400px;
+}
+
+.auth-footer-text {
+  margin-top: 20px;
+  font-size: 13px;
+}
+
+.auth-footer-text a {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.auth-footer-text a:hover {
+  color: #ff7a7a; /* Reddish tint to indicate 'Cancel' */
+}
+
+/* Full Width Footer */
+.site-footer {
+  width: 100vw;
+  background:var(--dp-04);
+  text-align: center;
+  
+}
+.copyright {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 25px 0;
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .stats-container { flex-direction: column; gap: 30px; }
+  header { padding: 24px 32px; }
+}
+
+
+/* ---------profile menu---------------- */
+
+/* ===== Profile Dropdown ===== */
+.profile-wrapper {
+    position: relative;
+    margin-left: auto;
+}
+
+.profile-trigger {
+    cursor: pointer;
+}
+
+.profile-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Dropdown box */
+.profile-dropdown {
+    position: absolute;
+    right: 0;
+    top: 55px;
+    width: 280px;
+    background: var(--dp-06);
+    border-radius: 6px;
+    display: none;
+    flex-direction: column;
+    padding: 5px;
+    z-index: 1000;
+}
+
+/* Header */
+.profile-header {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid var(--dp-24);
+}
+
+.profile-info{
+  margin-left: 10px;
+}
+.profile-info strong {
+    display: block;
+    font-size: 14px;
+}
+
+.profile-info span {
+    font-size: 12px;
+    color: var(--text-primary);
+}
+
+/* Menu */
+.profile-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin: 5px 0;
+}
+
+.profile-menu li a {
+    display: block;
+    padding: 12px 15px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.profile-menu li a:hover {
+    background: var(--dp-24);
+    border-radius: 5px;
+}
+
+/* Footer */
+.profile-footer {
+    border-top: 1px solid var(--dp-24);
+}
+
+.profile-footer .logout {
+    margin-top: 5px;
+    display: block;
+    padding: 12px 15px;
+    text-decoration: none;
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+.profile-footer .logout:hover {
+    background: var(--dp-24);
+    border-radius: 5px;
+}
+
+/* Active state */
+.profile-dropdown.show {
+    display: flex;
+}
+
+
+/* =========================================================
+   JOB RECOMMENDATIONS (glossy dark)
+   ========================================================= */
+.recommendations-page{
+  flex:1;
+  padding:60px 30px 60px;
+}
+.recommendations-wrap{
+  width: 100%;
+  margin:0 auto;
+}
+.section-title-light{
+  font-size:18px;
+  font-weight:600;
+  color: var(--text-primary);
+  margin-bottom:14px;
+}
+
+/* grid 3 per row */
+.job-grid-3{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:18px;
+}
+
+/* card */
+.job-card-light{
+  background: var(--dp-04);
+  border:1px solid var(--dp-24);
+  border-radius:16px;
+  padding:16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:150px;
+  transition: transform .25s ease;
+}
+.job-card-light:hover{
+  transform: translateY(-4px);
+}
+
+.job-left{display:flex;gap:14px;align-items:flex-start;min-width:0;}
+.company-logo-light{
+  width:60px;
+  height:60px;
+  border-radius:14px;
+  border:1px solid var(--dp-24);
+  overflow:hidden; /* IMPORTANT */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+/* Image styling - නිවැරදි කරන ලදි */
+.company-logo-light img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* ලෝගෝව නොකැපී සම්පූර්ණයෙන්ම පෙන්වයි */
+  border-radius: 14px;
+}
+
+/* Image styling - නිවැරදි කරන ලදි */
+/* .company-logo-light img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* පින්තූරය කොටුව පුරා විහිදේ 
+  border-radius: 14px;
+  display: block;
+} */
+
+.job-meta{display:flex;flex-direction:column;gap:10px;min-width:0;}
+.job-title-light{
+  font-size:16px;font-weight:600;color:var(--text-primary);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:250px;
+}
+.job-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.job-chip{font-size:16px;color:var(--text-primary);}
+.salary-pill-light{
+  font-size:16px;padding:4px 10px;border-radius:999px;
+  background: var(--dp-24);
+  color: var(--text-secondary);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.job-time{font-size:16px;color:var(--text-secondary);}
+.job-sub{font-size:16px;color:rgba(255,255,255,.60);}
+
+/* ===== Score ring (fixed + animated) ===== */
+
+/* Lets modern browsers animate the CSS variable smoothly */
+@property --p {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+/* ===== Score ring - Updated Colors ===== */
+
+/* ඇනිමේෂන් එක ස්මූත් වීමට (Browser support සඳහා) */
+@property --p {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.score-circle-light {
+  --p: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  font-size: 24px;
+  flex-shrink: 0;
+  position: relative;
+  display: grid;
+  place-items: center;
+  transition: --p 1.2s ease;
+
+  /* නව වර්ණ රටාව (New Gradient) */
+  background: conic-gradient(var(--accent-color) calc(var(--p) * 1%), var(--dp-06) 0);
+}
+
+/* රවුම මැද ඇති හිස් කොටස (Hole) */
+.score-circle-light::before {
+  content: "";
+  position: absolute;
+  inset: 7px; /* රවුමේ ඝනකම මෙතැනින් පාලනය කල හැක (8px - 12px අතර අගයක් දෙන්න) */
+  border-radius: 50%;
+  background-color: var(--dp-00); /* කාඩ් එකේ පසුබිම් වර්ණයම ලබා දීම */
+  
+  /* කලින් තිබූ border සහ blur ඉවත් කරන ලදී */
+  z-index: 0;
+}
+
+
+.score-text {
+  position: relative;
+  z-index: 1;
+  font-weight: 700;
+  font-size: 12px; 
+  color: rgba(255,255,255,.92);
+}
+
+.improvement_btn{
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+
+
+/* =========================================================
+   RESPONSIVE DESIGN (MOBILE / TABLET / DESKTOP)
+   ========================================================= */
+
+/* 1. TABLET & SMALL LAPTOPS (Max-width: 1100px) */
+@media (max-width: 1100px) {
+  .recommendations-page {
+    padding: 110px 40px 50px; /* වටේ ඉඩ මදක් අඩු කරන ලදී */
+  }
+
+  .job-grid-3 {
+    grid-template-columns: repeat(2, 1fr); /* තීරු 2ක් පෙන්වයි */
+    gap: 16px;
+  }
+}
+
+/* 2. MOBILE DEVICES (Max-width: 768px) */
+@media (max-width: 768px) {
+  .recommendations-page {
+    padding: 100px 16px 40px; /* මොබයිල් සඳහා වටේ ඉඩ තවත් අඩු කරන ලදී */
+  }
+
+  .section-title-light {
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: center; /* මාතෘකාව මැදට ගෙන ඒම */
+  }
+
+  .job-grid-3 {
+    grid-template-columns: 1fr; /* තනි තීරුවක් (One Column) පෙන්වයි */
+  }
+
+  /* කාඩ් එක ඇතුලත සැකසුම් */
+  .job-card-light {
+    padding: 14px; /* කාඩ් එකේ ඇතුලත ඉඩ අඩු කිරීම */
+    align-items: flex-start; /* මාතෘකාව දිගු නම් උඩට align කිරීම */
+  }
+
+  /* ලෝගෝ එක මදක් කුඩා කිරීම */
+  .company-logo-light {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+  }
+
+  /* මාතෘකාව (Job Title) */
+  .job-title-light {
+    font-size: 15px;
+    white-space: normal; /* දිගු නම් ඊළඟ පේළියට වැටීමට (No crop) */
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+
+  /* කුඩා ටැග් (Chips) සහ Salary */
+  .job-chip, 
+  .salary-pill-light, 
+  .job-time, 
+  .job-sub {
+    font-size: 11px; /* අකුරු ප්‍රමාණය අඩු කිරීම */
+  }
+  
+  .salary-pill-light {
+    padding: 3px 8px;
+  }
+
+  /* Score Ring එක කුඩා කිරීම */
+  .score-circle-light {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .score-circle-light::before {
+    inset: 6px; /* Ring එකේ ඝනකම ගැලපීම */
+  }
+
+  .score-text {
+    font-size: 9px; /* ප්‍රතිශතයේ අකුරු කුඩා කිරීම */
+  }
+}
+
+/* 3. VERY SMALL MOBILES (Max-width: 380px) */
+@media (max-width: 380px) {
+  .job-card-light {
+    flex-wrap: wrap; /* ඉඩ මදි නම් පහළට වැටීමට */
+    gap: 10px;
+    position: relative;
+  }
+
+  /* ඉතා කුඩා ෆෝන් වලදී Score එක දකුණු කෙලවරේ උඩට ගැනීම */
+  .score-circle-light {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .score-text {
+    font-size: 6px;
+  }
+  
+  .score-circle-light::before {
+    inset: 4px;
+  }
+  
+  /* මාතෘකාවට Ring එක යට නොවී තිබීමට */
+  .job-meta {
+    max-width: 75%; 
+  }
+}
+
+
+
+/* ====================== */
+/* resume report */
+/* ========================= */
+
+.report-wrapper {
+    max-width: 100%;
+    margin: 40px auto;
+    padding: 0 60px;
+}
+
+/* --- Header Area --- */
+.report-banner {
+    background: var(--dp-06);
+    border-radius: 24px;
+    padding: 40px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+.report-banner h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    background: var(--accent-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+/* --- Dashboard Grid --- */
+.report-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 25px;
+}
+.dashboard-card {
+    background: var(--dp-06);
+    border-radius: 20px;
+    padding: 25px;
+    transition: transform 0.3s ease;
+}
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+/* --- Score Ring --- */
+.score-section {
+    grid-column: span 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.chart-container {
+    position: relative;
+    width: 180px;
+    height: 180px;
+}
+.score-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+.score-num {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+/* --- Analysis Content --- */
+.content-section { grid-column: span 8; }
+.full-width { grid-column: span 12; }
+.half-width { grid-column: span 6; }
+.card-header {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-primary);
+}
+.card-header i { color: var(--text-primary); }
+/* --- Lists --- */
+.report-list {
+    list-style: none;
+    padding: 0;
+}
+.report-list li {
+    padding: 12px;
+    margin-bottom: 10px;
+    background: var(--dp-12);
+    border-radius: 12px;
+    display: flex;
+    gap: 15px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text-primary);
+}
+.report-list li i { margin-top: 4px; }
+.report-list li span { color: var(--text-primary); }
+/* --- Keyword Chips --- */
+.tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.keyword-chip {
+    background: var(--dp-24);
+    color: var(--text-primary);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+}
+.keyword-chip:hover {
+    background: var(--accent-color);
+    transform: scale(1.05);
+}
+/* --- Info Pills --- */
+.info-pill-box {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    width: 100%;
+}
+.info-pill {
+    background: var(--dp-12);
+    padding: 10px 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+.info-pill label { display: block; font-size: 0.75rem; color: var(--text-primary); }
+.info-pill b { color: var(--text-primary); font-size: 1rem; }
+@media (max-width: 900px) {
+    .score-section, .content-section, .half-width { grid-column: span 12; }
+    .report-wrapper{
+        padding: 0 40px;
+    }
+}
+
+
+
+/* =========================================
+   NEW JOB DETAIL DESIGN (Based on Design.png)
+   ========================================= */
+
+.jd-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 60px 60px; /* Header spacing included */
+}
+
+/* --- Header Section --- */
+.jd-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 50px;
+    margin-bottom: 40px;
+}
+
+.jd-header-left {
+    display: flex;
+    gap: 24px;
+}
+
+.jd-logo-box {
+    width: 80px;
+    height: 80px;
+    background: #ccc; /* Placeholder grey from design */
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.jd-logo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.jd-title-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.jd-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.jd-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.jd-dot { font-size: 20px; line-height: 0; }
+
+.jd-pill {
+    display: inline-block;
+    background: var(--dp-24); /* Dark grey pill */
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    color: var(--text-primary);
+    margin-top: 5px;
+}
+
+/* --- Score Ring Override --- */
+/* This allows us to use the existing JS animation but remove the card styling */
+.no-style-card {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+
+.large-ring {
+    width: 90px;
+    height: 90px;
+    font-size: 28px;
+    background: conic-gradient(var(--accent-color) calc(var(--p) * 1%), var(--dp-06) 0); /* Light grey background for ring like design */
+}
+/* Center hole color matching body background */
+.large-ring::before {
+    background: var(--dp-00); 
+}
+
+
+/* --- Grid Layout --- */
+.jd-grid {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr; /* Left side wider than right */
+    gap: 40px;
+    align-items: start;
+}
+
+/* --- Left Panel (Description) --- */
+.jd-left-panel {
+    background: var(--dp-06); /* Card background */
+    padding: 30px;
+    border-radius: 10px; /* Slightly squared corners like design */
+}
+
+.jd-section-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+    margin-top: 20px;
+}
+.jd-section-title:first-child { margin-top: 0; }
+
+.jd-text-content {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    white-space: pre-line; /* Keeps paragraphs from DB */
+}
+
+
+/* --- Right Panel (Overview) --- */
+.jd-overview-card {
+    background: var(--dp-06); /* Matches the grey box in design */
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.jd-overview-title {
+    font-size: 18px;
+    margin-bottom: 24px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.jd-info-group {
+    margin-bottom: 20px;
+}
+
+.jd-info-group label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.jd-info-group p {
+    font-size: 15px;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.jd-info-group.two-col {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Action Buttons */
+.jd-action-buttons {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.full-width {
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px; /* Squared buttons like design */
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    font-weight: 500;
+}
+
+
+
+
+/* --- Responsive Mobile --- */
+@media (max-width: 768px) {
+    .jd-header {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .jd-header-left {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .jd-grid {
+        grid-template-columns: 1fr; /* Stack columns */
+    }
+
+    .jd-overview-card {
+        order: -1; /* Move overview to top on mobile if needed, or keep bottom */
+        margin-bottom: 20px;
+    }
+}
+
+
+
+
+/* =========================================
+   PROFILE DASHBOARD STYLES
+   ========================================= */
+
+.profile-dashboard-container {
+    display: flex;
+    width: 100%; /* 🟢 අලුතින් එක් කරන ලදී: සෑම විටම සම්පූර්ණ පළල ලබා ගනී */
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    gap: 30px;
+    min-height: 60vh;
+}
+
+/* Sidebar Styles */
+.profile-sidebar {
+    width: 250px;
+    flex-shrink: 0;
+}
+
+.sidebar-menu {
+    background: var(--dp-06);
+    border-radius: 16px;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    text-align: left;
+    padding: 12px 20px;
+    color: var(--text-secondary);
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tab-btn:hover {
+    background: var(--dp-12);
+    color: var(--text-primary);
+}
+
+.tab-btn.active {
+    background: var(--accent-color);
+    color: #fff; /* White text on active */
+    font-weight: 600;
+}
+
+/* Content Area Styles */
+.profile-content {
+    flex: 1;
+    width: 100%; /* 🟢 අලුතින් එක් කරන ලදී */
+    min-width: 0; /* 🟢 අලුතින් එක් කරන ලදී: Flexbox හරහා පළල කැඩී යාම වළක්වයි */
+    min-height: 500px; /* 🟢 අලුතින් එක් කරන ලදී: ටැබ් එකක උස අඩු වූ විට සිදුවන වෙනස වළක්වයි */
+    background: var(--dp-06);
+    border-radius: 16px;
+    padding: 40px;
+}
+
+.tab-content {
+    display: none; /* Hide all by default */
+    animation: fadeIn 0.4s ease;
+}
+
+.tab-content.active {
+    display: block; /* Show active only */
+}
+
+.tab-title {
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--dp-24);
+    padding-bottom: 15px;
+}
+
+/* Profile Picture Upload */
+.profile-pic-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.profile-pic-box {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border: 3px solid var(--dp-24);
+}
+
+.profile-pic-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.edit-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.edit-overlay span {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.profile-pic-box:hover .edit-overlay {
+    opacity: 1;
+}
+
+.pic-hint {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 10px;
+}
+
+/* Form Styles */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+.input-group-profile {
+    position: relative;
+}
+
+.input-group-profile label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+/* Input Fields Logic */
+.input-group-profile input, 
+.input-group-profile textarea {
+    width: 100%;
+    padding: 12px 16px;
+    background: transparent;
+    border: 1px solid transparent; /* Invisible border initially */
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 15px;
+    transition: all 0.3s;
+}
+
+/* Disabled state (Default look) */
+.input-group-profile input:disabled, 
+.input-group-profile textarea:disabled {
+    color: var(--text-primary);
+    cursor: pointer; /* To indicate clickable */
+}
+
+/* Hover effect on disabled inputs to suggest editability */
+.input-group-profile input.editable-input:disabled:hover,
+.input-group-profile textarea.editable-input:disabled:hover {
+    background: var(--dp-12);
+}
+
+/* Edit Icon */
+.edit-icon {
+    position: absolute;
+    right: 15px;
+    top: 38px;
+    color: var(--text-secondary);
+    pointer-events: none;
+    font-size: 14px;
+    opacity: 0.5;
+}
+
+/* Active State (When user clicks) */
+.input-group-profile input:not(:disabled),
+.input-group-profile textarea:not(:disabled) {
+    background: var(--dp-02);
+    border-color: var(--accent-color);
+    outline: none;
+}
+
+/* Permanently disabled (Email) */
+.disabled-permanent {
+    opacity: 0.6;
+    cursor: not-allowed !important;
+}
+
+.form-actions {
+    margin-top: 30px;
+    text-align: right;
+}
+
+/* Input Fields Logic Update */
+
+/* Default Look (Readonly state looks like plain text) */
+.input-group-profile input[readonly], 
+.input-group-profile textarea[readonly] {
+    width: 100%;
+    padding: 12px 16px;
+    background: transparent;
+    border: 1px solid transparent; /* Border පෙනෙන්නේ නැත */
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 15px;
+    cursor: pointer; /* Click කළ හැකි බව පෙන්වයි */
+    transition: all 0.3s;
+}
+
+/* Hover effect on readonly inputs */
+.input-group-profile input[readonly]:hover,
+.input-group-profile textarea[readonly]:hover {
+    background: var(--dp-12); /* Mouse එක ගෙන ගිය විට පසුබිම වෙනස් වේ */
+}
+
+/* Active State (When readonly is removed) */
+.input-group-profile input:not([readonly]),
+.input-group-profile textarea:not([readonly]) {
+    background: var(--dp-02);
+    border: 1px solid var(--accent-color); /* දැන් Border එක පෙනේ */
+    outline: none;
+    cursor: text;
+}
+
+/* Permanently disabled (Email) - This stays disabled */
+.disabled-permanent {
+    opacity: 0.6;
+    cursor: not-allowed !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-dashboard-container {
+        flex-direction: column;
+    }
+    .profile-sidebar {
+        width: 100%;
+        overflow-x: auto;
+    }
+    .sidebar-menu {
+        flex-direction: row;
+    }
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    .full-width {
+        grid-column: span 1;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* Flash messages */
+.flash {
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.flash.success { background: #d1fae5; color: #065f46; }
+.flash.danger  { background: #fee2e2; color: #991b1b; }
+.flash.info    { background: #bfdbfe; color: #1e40af; }
+
+
+/* Button loader */
+.btn-loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--text-primary);
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+
+/* =========================================================
+   SUBTLE PULSING GLOW BACKGROUND (Breathing Effect)
+   ========================================================= */
+
+.glow-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    background-color: var(--dp-00);
+}
+
+/* පොදු Glow හැඩය - එකම තැන නිවි නිවි පත්තු වීමට */
+.glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(150px);
+    /* ආලෝකය නිවී පත්තු වෙන Animation එක */
+    animation: pulseLight infinite alternate ease-in-out;
+}
+
+/* 1. රතු පැහැති ආලෝකය (වම් පස) */
+.orb-1 {
+    width: 450px;
+    height: 450px;
+    background: #ff3b30; 
+    top: -100px;
+    left: -100px;
+    animation-duration: 6s; /* තත්පර 6න් 6ට පත්තු වේ */
+}
+
+/* 2. කොළ පැහැති ආලෝකය (දකුණු පස පහළ) */
+.orb-2 {
+    width: 550px;
+    height: 550px;
+    background: #23b95d; 
+    bottom: -150px;
+    right: -100px;
+    animation-duration: 8s; /* තත්පර 8න් 8ට පත්තු වේ */
+}
+
+/* 3. නිල් පැහැති ආලෝකය (මැද) */
+.orb-3 {
+    width: 400px;
+    height: 400px;
+    background: #007aff; 
+    top: 40%;
+    left: 45%;
+    animation-duration: 5s; /* තත්පර 7න් 7ට පත්තු වේ */
+}
+
+/* ආලෝකය පත්තු වී නිවී යන ආකාරය (Opacity පමණක් වෙනස් වේ) */
+@keyframes pulseLight {
+    0% {
+        opacity: 0.10; /* ආලෝකය ගොඩක් අඩු වෙනවා (නිවෙනවා වගේ) */
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 0.30; /* සාමාන්‍ය ගාණට පත්තු වෙනවා (ඇහැට අමාරු නැති තරමට) */
+        transform: scale(1.05);
+    }
+}
+
+.upload-card {
+    background-color: rgba(37, 37, 37, 0.6) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+/* =========================================== */
+/* Cards වලට Glassmorphism (වීදුරු) පෙනුම ලබා දීම */
+/* ============================================= */
+.job-card-light, 
+.dashboard-card, 
+.login-card, 
+.register-card,
+.jd-left-panel,
+.jd-overview-card,
+.profile-content,
+.sidebar-menu,
+.site-footer {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+
+
+/* =========================================
+   AI Theme Preloader Styles
+   ========================================= */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; /* 🟢 100% වෙනුවට 100vh යෙදීම වඩාත් සුදුසුයි */
+    background-color: var(--bg-main, #121212);
+    z-index: 999999; /* 🟢 අගය තරමක් වැඩි කර ඇත */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.6s ease; /* 🟢 visibility ඉවත් කර opacity පමණක් තබා ඇත */
+}
+
+/* කැරකෙන රවුම (Spinning Ring) */
+.loader-ring {
+    width: 90px;
+    height: 90px;
+    border: 4px solid var(--dp-24, #333333);
+    border-top: 4px solid var(--accent-color, #007aff);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    box-shadow: 0 0 15px rgba(0, 122, 255, 0.2);
+}
+
+/* මැද ඇති AI අයිකනය (Pulsing Icon) */
+.loader-icon {
+    font-size: 35px;
+    color: var(--accent-color, #007aff);
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.8); opacity: 0.6; }
+    50% { transform: scale(1.1); opacity: 1; text-shadow: 0 0 15px rgba(0,122,255,0.6); }
+    100% { transform: scale(0.8); opacity: 0.6; }
+}
+
+
+
+/* =========================================
+   TOAST NOTIFICATIONS (Top Left - Auto Hide)
+   ========================================= */
+#toast-container {
+    position: fixed;
+    top: 100px; /* Header එකට යටින් පෙන්වීමට */
+    left: 20px; /* වම් පසට */
+    z-index: 999999;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    pointer-events: none; /* හිස් අවකාශය හරහා ක්ලික් කිරීමට ඉඩදීම */
+}
+
+.toast-message {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 280px;
+    max-width: 380px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: var(--dp-06); /* Dark Glassmorphism */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    border-left: 5px solid transparent; /* පාට ඉර සඳහා */
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 500;
+    pointer-events: auto; /* මැසේජ් එක ක්ලික් කිරීමට ඉඩදීම */
+    
+    /* වම් පසින් ඇතුළට එන Animation එක */
+    animation: slideInLeft 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* මැකී යාමේ Animation එක සඳහා Class එක */
+.toast-message.hiding {
+    opacity: 0;
+    transform: translateX(-100%) scale(0.9);
+}
+
+/* Categories වලට අදාළ වර්ණ සහ අයිකන් */
+.toast-success { border-left-color: var(--accent-color); }
+.toast-success .toast-icon { color: var(--accent-color); }
+
+.toast-danger, .toast-error { border-left-color: #ff3b30; }
+.toast-danger .toast-icon, .toast-error .toast-icon { color: #ff3b30; }
+
+.toast-info { border-left-color: #007aff; }
+.toast-info .toast-icon { color: #007aff; }
+
+.toast-icon { font-size: 22px; }
+.toast-content { flex: 1; line-height: 1.5; }
+
+.toast-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s;
+    line-height: 1;
+}
+
+.toast-close:hover { color: var(--text-primary); }
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-100%); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+
+

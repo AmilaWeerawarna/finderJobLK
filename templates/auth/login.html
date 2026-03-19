@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<main class="auth-container">
+  <div class="login-card">
+    <div class="auth-logo-box">◆</div>
+    <h2>Welcome Back</h2>
+    <p class="auth-subtitle">Don't have an account yet? <a href="/register">Sign in</a></p>
+
+    <form class="auth-form" method="post">
+      <div class="input-group">
+        <input type="email" name="email" placeholder="Email address" required>
+      </div>
+      <div class="input-group">
+        <input type="password" name="password" placeholder="Password" required>
+      </div>
+      <div class="form-link-row">
+        <a href="/forgot-password" class="forgot-password">Forgot Password</a>
+      </div>
+      <button type="submit" class="btn-primary btn-block">Login</button>
+    </form>
+  </div>
+</main>
+
+{% endblock %}

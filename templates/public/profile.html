@@ -1,0 +1,349 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="profile-dashboard-container">
+    
+    <aside class="profile-sidebar">
+        <div class="sidebar-menu">
+            <button class="tab-btn active" onclick="openTab(event, 'personalDetails')">
+                <i class="icon-user"></i> Personal Details
+            </button>
+            <button class="tab-btn" onclick="openTab(event, 'wishlist')">
+                <i class="icon-heart"></i> Wishlist
+            </button>
+            <button class="tab-btn" onclick="openTab(event, 'history')">
+                <i class="icon-clock"></i> History
+            </button>
+            <button class="tab-btn" onclick="openTab(event, 'applications')">
+                <i class="icon-briefcase"></i> My Applications
+            </button>
+        </div>
+    </aside>
+
+    <main class="profile-content">
+        
+        <div id="personalDetails" class="tab-content active">
+            <h2 class="tab-title">Personal Details</h2>
+            
+            <form action="/profile/update" method="POST" enctype="multipart/form-data" id="profileForm">
+                
+                <div class="profile-pic-wrapper">
+                    <div class="profile-pic-box" id="profilePicBox">
+                        <img src="{{ url_for('static', filename='profile_img/' + user.profile_image) if user.profile_image else 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/960px-Windows_10_Default_Profile_Picture.svg.png' }}" 
+                             alt="Profile" id="profileImagePreview">
+                        
+                        <div class="edit-overlay">
+                            <span><i class="icon-camera"></i> Edit</span>
+                        </div>
+                    </div>
+                    <input type="file" name="profile_image" id="imageInput" accept="image/*" style="display: none;">
+                    <p class="pic-hint">Click to upload new picture</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="input-group-profile full-width">
+                        <label>Name</label>
+                        <input type="text" name="name" class="editable-input" 
+                               value="{{ user.name or '' }}" readonly 
+                               placeholder="Enter your name" onclick="enableInput(this)">
+                        <span class="edit-icon">✎</span>
+                    </div>
+
+                    <div class="input-group-profile">
+                        <label>Email Address</label>
+                        <input type="email" value="{{ user.email }}" disabled class="disabled-permanent">
+                    </div>
+
+                    <div class="input-group-profile">
+                        <label>Phone Number</label>
+                        <input type="text" name="phone" class="editable-input" 
+                               value="{{ user.phone or '' }}" readonly 
+                               placeholder="+94 7X XXX XXXX" onclick="enableInput(this)">
+                        <span class="edit-icon">✎</span>
+                    </div>
+
+                    <div class="input-group-profile full-width">
+                        <label>Bio</label>
+                        <textarea name="bio" class="editable-input" rows="3" readonly 
+                                  placeholder="Tell us about yourself..." onclick="enableInput(this)">{{ user.bio or '' }}</textarea>
+                         <span class="edit-icon">✎</span>
+                    </div>
+                </div>
+
+                <div class="form-actions" id="updateBtnContainer" style="display: none;">
+                    <button type="submit" class="btn-primary">Update Profile</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="wishlist" class="tab-content">
+            <h2 class="tab-title">My Wishlist</h2>
+            
+            {% if wishlist_jobs and wishlist_jobs|length > 0 %}
+                <div class="job-grid-2" style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    {% for job in wishlist_jobs %}
+                    <div class="job-card-light" id="wishlist-card-{{ job.job_id }}" style="position: relative; display: flex; align-items: center; justify-content: space-between;">
+                        
+                        <button onclick="openDeleteModal(event, '{{ job.job_id }}', 'wishlist')" 
+                                style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: #ff5555; cursor: pointer; font-size: 18px; z-index: 10;"
+                                title="Remove from wishlist">
+                            <i class="fas fa-times"></i>
+                        </button>
+
+                        <a href="{{ url_for('match.job_details', job_id=job.job_id, score=job.score) }}" style="text-decoration: none; color: inherit; width: 100%; display: flex; align-items: center; justify-content: space-between;">
+                            <div class="job-left">
+                                <div class="company-logo-light">
+                                    {% if job.job_image %}
+                                        <img src="{{ url_for('static', filename='company_logos/' + job.job_image) }}" alt="Logo">
+                                    {% else %}
+                                        <img src="https://png.pngtree.com/element_pic/16/11/03/dda587d35b48fd01947cf38931323161.jpg" alt="Default Logo">
+                                    {% endif %}
+                                </div>
+                                <div class="job-meta">
+                                    <h3 class="job-title-light">{{ job.job_title }}</h3>
+                                    <div class="job-sub" style="font-size: 13px; color: var(--text-secondary); margin-bottom: 5px;">{{ job.company_name }}</div>
+                                    <div class="job-row">
+                                        <span class="job-chip"><i class="fas fa-map-marker-alt"></i> {{ job.location }}</span>
+                                    </div>
+                                    <div class="job-row" style="margin-top: 5px;">
+                                        <span class="salary-pill-light"><i class="fas fa-money-bill-wave"></i> {{ job.salary }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="placeholder-text" style="color: var(--text-secondary);">You haven't saved any jobs yet.</p>
+            {% endif %}
+        </div>
+        
+        
+        <div id="history" class="tab-content">
+            <h2 class="tab-title">Browsing History</h2>
+            
+            {% if history_jobs and history_jobs|length > 0 %}
+                <div class="job-grid-2" style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    {% for job in history_jobs %}
+                    <div class="job-card-light" id="history-card-{{ job.job_id }}" style="position: relative; display: flex; align-items: center; justify-content: space-between;">
+                        
+                        <button onclick="openDeleteModal(event, '{{ job.job_id }}', 'history')" 
+                                style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: #888; cursor: pointer; font-size: 18px; z-index: 10;"
+                                title="Remove from history">
+                            <i class="fas fa-times"></i>
+                        </button>
+
+                        <a href="{{ url_for('match.job_details', job_id=job.job_id, score=job.score) }}" style="text-decoration: none; color: inherit; width: 100%; display: flex; align-items: center; justify-content: space-between;">
+                            <div class="job-left">
+                                <div class="company-logo-light">
+                                    {% if job.job_image %}
+                                        <img src="{{ url_for('static', filename='company_logos/' + job.job_image) }}" alt="Logo">
+                                    {% else %}
+                                        <img src="https://png.pngtree.com/element_pic/16/11/03/dda587d35b48fd01947cf38931323161.jpg" alt="Default Logo">
+                                    {% endif %}
+                                </div>
+                                <div class="job-meta">
+                                    <h3 class="job-title-light">{{ job.job_title }}</h3>
+                                    <div class="job-sub" style="font-size: 13px; color: var(--text-secondary); margin-bottom: 5px;">{{ job.company_name }}</div>
+                                    <div class="job-row">
+                                        <span class="job-chip"><i class="fas fa-map-marker-alt"></i> {{ job.location }}</span>
+                                    </div>
+                                    <div class="job-row" style="margin-top: 5px;">
+                                        <span class="salary-pill-light"><i class="fas fa-money-bill-wave"></i> {{ job.salary }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="placeholder-text" style="color: var(--text-secondary);">No history available.</p>
+            {% endif %}
+        </div>
+        
+        <div id="applications" class="tab-content">
+            <h2 class="tab-title">My Applications</h2>
+            
+            {% if applied_jobs and applied_jobs|length > 0 %}
+                <div class="job-grid-2" style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    {% for job in applied_jobs %}
+                    <div class="job-card-light" style="position: relative; display: flex; align-items: center; justify-content: space-between;">
+
+                        <a href="{{ url_for('match.job_details', job_id=job.job_id, score=job.score) }}" style="text-decoration: none; color: inherit; width: 100%; display: flex; align-items: center; justify-content: space-between;">
+                            <div class="job-left">
+                                <div class="company-logo-light">
+                                    {% if job.job_image %}
+                                        <img src="{{ url_for('static', filename='company_logos/' + job.job_image) }}" alt="Logo">
+                                    {% else %}
+                                        <img src="https://png.pngtree.com/element_pic/16/11/03/dda587d35b48fd01947cf38931323161.jpg" alt="Default Logo">
+                                    {% endif %}
+                                </div>
+                                <div class="job-meta">
+                                    <h3 class="job-title-light">{{ job.job_title }}</h3>
+                                    <div class="job-sub" style="font-size: 13px; color: var(--text-secondary); margin-bottom: 5px;">{{ job.company_name }}</div>
+                                    <div class="job-row">
+                                        <span class="job-chip"><i class="fas fa-map-marker-alt"></i> {{ job.location }}</span>
+                                    </div>
+                                    <div class="job-row" style="margin-top: 8px;">
+                                        <span style="font-size: 11px; padding: 4px 10px; border-radius: 8px; background: rgba(0, 122, 255, 0.15); color: #007aff; font-weight: 600; border: 1px solid rgba(0, 122, 255, 0.2);">
+                                            <i class="fas fa-paper-plane"></i> Applied: {{ job.applied_at.strftime('%Y-%m-%d') if job.applied_at else 'Recently' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="placeholder-text" style="color: var(--text-secondary);">You haven't applied to any jobs yet.</p>
+            {% endif %}
+        </div>
+
+    </main>
+</div>
+
+<div id="deleteConfirmModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center;">
+    <div style="background: var(--dp-06); border: 1px solid var(--dp-24); padding: 30px; border-radius: 16px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);">
+        
+        <div style="font-size: 40px; color: #ff3b30; margin-bottom: 15px;">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        
+        <h3 style="color: var(--text-primary); margin-bottom: 10px; font-size: 22px;">Are you sure?</h3>
+        
+        <p id="deleteModalText" style="color: var(--text-secondary); font-size: 14px; margin-bottom: 25px;">
+            Do you really want to remove this item?
+        </p>
+        
+        <div style="display: flex; justify-content: center; gap: 15px;">
+            <button type="button" onclick="closeDeleteModal()" style="padding: 10px 24px; border-radius: 8px; background: transparent; color: var(--text-secondary); border: 1px solid var(--dp-24); cursor: pointer; transition: 0.3s; font-size: 14px; font-weight: 500;" onmouseover="this.style.color='var(--text-primary)'; this.style.background='var(--dp-12)';" onmouseout="this.style.color='var(--text-secondary)'; this.style.background='transparent';">
+                Cancel
+            </button>
+            <button type="button" id="confirmDeleteBtn" style="background: #ff3b30; color: white; padding: 10px 24px; border-radius: 8px; border: none; font-weight: 500; cursor: pointer; font-size: 14px; transition: 0.3s;" onmouseover="this.style.background='#d63026';" onmouseout="this.style.background='#ff3b30';">
+                Remove
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 1. Input Enable Logic (New Function)
+    function enableInput(element) {
+        // 'readonly' ඉවත් කරයි
+        element.removeAttribute("readonly");
+        // Focus ලබා දෙයි
+        element.focus();
+        // Button පෙන්වයි
+        document.getElementById("updateBtnContainer").style.display = "block";
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        
+        // 2. Tab Switching Logic
+        window.openTab = function(evt, tabName) {
+            let tabContents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].style.display = "none";
+                tabContents[i].classList.remove("active");
+            }
+            let tabLinks = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < tabLinks.length; i++) {
+                tabLinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            if(evt) evt.currentTarget.classList.add("active");
+        };
+
+        // 3. Profile Picture Logic
+        const profilePicBox = document.getElementById("profilePicBox");
+        const imageInput = document.getElementById("imageInput");
+        const profileImagePreview = document.getElementById("profileImagePreview");
+        const updateBtnContainer = document.getElementById("updateBtnContainer");
+
+        if (profilePicBox && imageInput) {
+            profilePicBox.addEventListener("click", () => {
+                imageInput.click();
+            });
+
+            imageInput.addEventListener("change", function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        profileImagePreview.src = e.target.result;
+                    }
+                    reader.readAsDataURL(file);
+                    updateBtnContainer.style.display = "block";
+                }
+            });
+        }
+    });
+
+// 🟢 අලුත් Modal Logic එක
+    let itemToDelete = null;
+    let deleteType = null; // 'wishlist' හෝ 'history'
+
+    function openDeleteModal(event, jobId, type) {
+        event.preventDefault(); 
+        event.stopPropagation();
+        
+        itemToDelete = jobId;
+        deleteType = type;
+        
+        // මකා දමන්නේ කුමක්දැයි අනුව පණිවිඩය වෙනස් කිරීම
+        const modalText = document.getElementById("deleteModalText");
+        if (type === 'wishlist') {
+            modalText.innerText = "Do you really want to remove this job from your wishlist?";
+        } else {
+            modalText.innerText = "Do you really want to remove this job from your browsing history?";
+        }
+        
+        document.getElementById("deleteConfirmModal").style.display = "flex";
+    }
+
+    function closeDeleteModal() {
+        document.getElementById("deleteConfirmModal").style.display = "none";
+        itemToDelete = null;
+        deleteType = null;
+    }
+
+    // Modal එකේ 'Remove' බොත්තම එබූ විට
+    document.getElementById("confirmDeleteBtn").addEventListener("click", function() {
+        if (!itemToDelete || !deleteType) return;
+        
+        const endpoint = deleteType === 'wishlist' ? '/wishlist/toggle' : '/history/remove';
+        const cardPrefix = deleteType === 'wishlist' ? 'wishlist-card-' : 'history-card-';
+        const jobId = itemToDelete;
+
+        // පළමුව Modal එක වසා දැමීම
+        closeDeleteModal();
+
+        // Backend එකට Request එක යැවීම
+        fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ job_id: jobId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'removed') {
+                // UI එකෙන් කාඩ් එක Animation එකක් සමග ඉවත් කිරීම
+                const card = document.getElementById(cardPrefix + jobId);
+                if(card) {
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.9)';
+                    card.style.transition = '0.3s';
+                    setTimeout(() => card.remove(), 300); 
+                }
+            }
+        })
+        .catch(err => console.error("Error:", err));
+    });
+
+</script>
+{% endblock %}

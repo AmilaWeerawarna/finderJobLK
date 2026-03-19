@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Employer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_style.css') }}">
+    <style>
+        /* Image Upload Box Styles */
+        .detail-logo-box { position: relative; cursor: pointer; }
+        .detail-logo-box:hover .camera-overlay { opacity: 1; }
+        .camera-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); color: white; display: flex;
+            justify-content: center; align-items: center; opacity: 0; transition: 0.3s;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body class="dark-theme">
+
+    <div class="dashboard-container">
+        <aside class="sidebar sub-sidebar">
+            <h2 class="logo">FinderJobLK</h2>
+            <nav class="menu">
+                <a href="/admin/manage_employers/pending">Pending Verify</a>
+                <a href="/admin/manage_employers/verified" class="active">Verified Employers</a>
+                <a href="/admin/manage_employers/rejected">Rejected Employers</a>
+            </nav>
+            <div class="sidebar-bottom">
+                <a href="/logout">🚪 Log Out</a>
+            </div>
+        </aside>
+
+        <main class="content">
+            <header class="back-header">
+                <a href="/admin/manage_employers/verified" class="back-btn">←</a>
+                <h2>Manage Employers</h2>
+            </header>
+
+            <form action="/admin/manage_employers/add" method="POST" enctype="multipart/form-data">
+                <section class="employer-detail-card editable-card">
+                    
+                    <div class="detail-top-row">
+                        <div class="detail-logo-box" id="imageUploadBox" style="background-color: var(--bg-main);">
+                            <img id="imagePreview" src="" alt="Logo" style="display: none; width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
+                            <span id="logoText" style="color: var(--text-primary);">Logo</span>
+                            <div class="camera-overlay"></div>
+                            <input type="file" name="profile_image" id="profileImageInput" accept="image/*" style="display: none;">
+                        </div>
+                        
+                        <div class="detail-top-inputs">
+                            <div class="input-group">
+                                <input type="text" name="full_name" placeholder="Full Name" required>
+                            </div>
+                            <div class="input-group">
+                                <input type="email" name="email" placeholder="Email" required>
+                            </div>
+                            <div class="input-group">
+                                <input type="password" name="password" placeholder="Temporary Password" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group full-width">
+                        <input type="text" name="company_name" placeholder="Company Name" required>
+                    </div>
+
+                    <div class="detail-two-cols">
+                        <div class="input-group">
+                            <input type="text" name="phone" placeholder="Phone Number">
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="city" placeholder="City">
+                        </div>
+                    </div>
+
+                    <div class="input-group full-width website-input">
+                        <input type="text" name="website" placeholder="Company Web Site URL">
+                    </div>
+
+                    <div class="detail-actions" style="margin-top: 20px;">
+                        <a href="/admin/manage_employers/verified" class="btn-reject" style="background-color: #e0e0e0; color: black; text-decoration: none; font-size: 14px;">Cancel</a>
+                        <button type="submit" class="btn-verify" style="background-color: #f2f2f2; color: black;">Save</button>
+                    </div>
+
+                </section>
+            </form>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const imageUploadBox = document.getElementById("imageUploadBox");
+            const profileImageInput = document.getElementById("profileImageInput");
+            const imagePreview = document.getElementById("imagePreview");
+            const logoText = document.getElementById("logoText");
+
+            imageUploadBox.addEventListener("click", () => profileImageInput.click());
+
+            profileImageInput.addEventListener("change", function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) { 
+                        imagePreview.src = e.target.result; 
+                        imagePreview.style.display = "block";
+                        logoText.style.display = "none";
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

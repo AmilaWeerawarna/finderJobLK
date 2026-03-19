@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Job Seekers</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_style.css') }}">
+    <style>
+        .image-upload-box {
+            position: relative;
+            overflow: hidden; 
+        }
+        #imagePreview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 10px; 
+            display: none; 
+        }
+        
+        .image-upload-box:hover .camera-icon {
+            z-index: 2;
+            color: white;
+            text-shadow: 0px 0px 5px black;
+        }
+    </style>
+</head>
+<body class="dark-theme">
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <h2 class="logo">FinderJobLK</h2>
+            <nav class="menu">
+                <a href="/admin/dashboard">Dashboard</a>
+                <a href="/admin/manage_employers">Manage Employers</a>
+                <a href="/admin/manage_job_seekers" class="active">Manage Job Seekers</a>
+                <a href="/admin/messages" class="{% if request.path == '/admin/messages' %}active{% endif %}">
+                    <span>Message</span>
+                    {% if unread_count > 0 %}
+                        <span class="notif-badge">{{ unread_count }}</span>
+                    {% endif %}
+                </a>
+            </nav>
+            <div class="sidebar-bottom">
+                <a href="/logout">🚪 Log Out</a>
+            </div>
+        </aside>
+
+        <main class="content">
+            <section class="add-user-section">
+                <div class="section-header">
+                    <h3 id="formTitle">Add User</h3>
+                </div>
+                
+                <form action="/admin/manage_job_seekers" method="POST" enctype="multipart/form-data" class="add-user-form" id="userForm">
+                    <input type="hidden" name="action" id="formAction" value="add">
+                    <input type="hidden" name="user_id" id="userId" value="">
+
+                    <div class="image-upload-box" id="imageUploadBox">
+                        <span class="camera-icon">📷</span>
+                        <img id="imagePreview" src="" alt="Preview">
+                        <input type="file" name="profile_image" id="profileImageInput" accept="image/*" style="display: none;">
+                    </div>
+
+                    <div class="form-inputs">
+                        <div class="input-group">
+                            <label>Full name -</label>
+                            <input type="text" name="full_name" id="fullNameInput" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Email -</label>
+                            <input type="email" name="email" id="emailInput" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Password -</label>
+                            <input type="password" name="password" id="passwordInput" required placeholder="Leave blank to keep current">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-add" id="submitBtn">Add profile</button>
+                        <button type="button" class="btn-add" id="cancelBtn" style="display: none; background-color: #666;">Cancel</button>
+                    </div>
+                </form>
+            </section>
+
+            <hr class="divider">
+
+            <section class="all-users-section">
+                <div class="header-row">
+                    <h3>All Users</h3>
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchInput" placeholder="Search Users...">
+                    </div>
+                </div>
+
+                <div class="users-grid" id="usersGrid">
+                    {% for user in users %}
+                    <div class="user-card">
+                        {% set img_url = url_for('static', filename='profile_img/' + (user.get('profile_image') or 'default_user.png')) %}
+                        <img src="{{ img_url }}" alt="Profile" class="user-avatar">
+                        
+                        <span class="user-name">{{ user.get('name', 'Unknown') }}</span>
+                        
+                        <div class="actions">
+                            <span class="edit-icon" title="Edit" 
+                                  data-id="{{ user._id }}" 
+                                  data-name="{{ user.get('name', '') }}" 
+                                  data-email="{{ user.get('email', '') }}"
+                                  data-image="{{ img_url }}">✏️</span>
+                            
+                            <span class="delete-icon" title="Delete" data-id="{{ user._id }}">🗑️</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="deleteModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h3>Confirm Deletion</h3>
+            <p>Are you sure you want to delete this user?<br>This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button id="confirmDeleteBtn" class="btn-danger">Yes, Delete</button>
+                <button id="cancelDeleteBtn" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <form id="deleteForm" method="POST" style="display: none;"></form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Typing Base Search
+            const searchInput = document.getElementById("searchInput");
+            const userCards = document.querySelectorAll(".user-card");
+
+            searchInput.addEventListener("keyup", function() {
+                let filter = searchInput.value.toLowerCase();
+                userCards.forEach(function(card) {
+                    let userName = card.querySelector(".user-name").textContent.toLowerCase();
+                    if (userName.includes(filter)) {
+                        card.style.display = "flex";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+            });
+
+            // Image Upload Logic - Click Box to Trigger File Input
+            const imageUploadBox = document.getElementById("imageUploadBox");
+            const profileImageInput = document.getElementById("profileImageInput");
+            const imagePreview = document.getElementById("imagePreview");
+
+            imageUploadBox.addEventListener("click", function() {
+                profileImageInput.click(); // කොටුව ක්ලික් කළ විට ෆයිල් තේරීමේ කවුළුව විවෘත වේ
+            });
+
+            // Image Upload Logic - Preview Image
+            profileImageInput.addEventListener("change", function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = "block"; 
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Edit Icon Click Logic
+            const editIcons = document.querySelectorAll(".edit-icon");
+            editIcons.forEach(icon => {
+                icon.addEventListener("click", function() {
+                    document.getElementById("formTitle").textContent = "Edit User";
+                    document.getElementById("formAction").value = "update";
+                    document.getElementById("userId").value = this.dataset.id;
+                    
+                    document.getElementById("fullNameInput").value = this.dataset.name;
+                    document.getElementById("emailInput").value = this.dataset.email;
+                    
+                    
+                    const imageUrl = this.dataset.image;
+                    if(imageUrl) {
+                        imagePreview.src = imageUrl;
+                        imagePreview.style.display = "block";
+                    } else {
+                        imagePreview.src = "";
+                        imagePreview.style.display = "none";
+                    }
+                    
+                    document.getElementById("passwordInput").required = false;
+                    document.getElementById("submitBtn").textContent = "Update profile";
+                    document.getElementById("cancelBtn").style.display = "inline-block";
+                    
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+
+            // Cancel Button Logic
+            document.getElementById("cancelBtn").addEventListener("click", function() {
+                document.getElementById("formTitle").textContent = "Add User";
+                document.getElementById("formAction").value = "add";
+                document.getElementById("userId").value = "";
+                
+                document.getElementById("userForm").reset();
+                document.getElementById("passwordInput").required = true;
+                
+                
+                imagePreview.src = "";
+                imagePreview.style.display = "none";
+                
+                document.getElementById("submitBtn").textContent = "Add profile";
+                this.style.display = "none";
+            });
+
+            // Delete Icon Click Logic
+            const deleteModal = document.getElementById("deleteModal");
+            const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+            const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+            let userIdToDelete = null;
+
+            const deleteIcons = document.querySelectorAll(".delete-icon");
+            deleteIcons.forEach(icon => {
+                icon.addEventListener("click", function() {
+                    userIdToDelete = this.dataset.id;
+                    deleteModal.style.display = "flex";
+                });
+            });
+
+            cancelDeleteBtn.addEventListener("click", function() {
+                deleteModal.style.display = "none";
+                userIdToDelete = null;
+            });
+
+            confirmDeleteBtn.addEventListener("click", function() {
+                if (userIdToDelete) {
+                    let deleteForm = document.getElementById("deleteForm");
+                    deleteForm.action = "/admin/delete_job_seeker/" + userIdToDelete;
+                    deleteForm.submit();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

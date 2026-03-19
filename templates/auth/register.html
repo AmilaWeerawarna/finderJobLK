@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<main class="auth-container">
+  <div class="login-card register-card">
+    <div class="auth-logo-box">◆</div>
+    <h2>Create Account</h2>
+    <p class="auth-subtitle">Already have an account? <a href="/login">Login</a></p>
+
+    <form method="POST" class="auth-form">
+      <div class="input-group">
+        <input type="text" name="name" placeholder="Full Name" required>
+      </div>
+      
+      <div class="input-group">
+        <input type="email" name="email" placeholder="Email Address" required>
+      </div>
+
+      <div class="input-group">
+        <input type="password" name="password" placeholder="Password" required>
+      </div>
+
+      <div class="input-group">
+        <select name="role" id="role" class="theme-select" onchange="toggleEmployerFields()">
+          <option value="jobseeker">Register as Jobseeker</option>
+          <option value="employer">Register as Employer</option>
+        </select>
+      </div>
+
+      <div id="employerFields" class="extra-fields">
+        <div class="input-group">
+          <input type="text" name="company_name" placeholder="Company Name">
+        </div>
+        <div class="input-group">
+          <input type="text" name="phone" placeholder="Phone Number">
+        </div>
+        <div class="input-group">
+          <input type="text" name="city" placeholder="City">
+        </div>
+        <div class="input-group">
+          <input type="text" name="website" placeholder="Website URL (Optional)">
+        </div>
+      </div>
+
+      <button type="submit" class="btn-primary btn-block">Create Account</button>
+      
+    </form>
+  </div>
+</main>
+
+<script>
+function toggleEmployerFields(){
+  var role = document.getElementById("role").value;
+  document.getElementById("employerFields").style.display = (role === "employer") ? "block" : "none";
+}
+</script>
+{% endblock %}

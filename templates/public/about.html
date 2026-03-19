@@ -1,0 +1,184 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+    .about-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .about-hero {
+        text-align: center;
+        padding: 80px 20px;
+        background: var(--dp-06, #1e1e1e);
+        border-radius: 20px;
+        margin-bottom: 50px;
+        border: 1px solid var(--dp-24, #333);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .about-hero h1 {
+        font-size: 42px;
+        color: var(--text-primary, #fff);
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+
+    .about-hero h1 span {
+        color: var(--accent-color, #007aff);
+    }
+
+    .about-hero p {
+        font-size: 18px;
+        color: var(--text-secondary, #b3b3b3);
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    .mission-section {
+        display: flex;
+        gap: 40px;
+        margin-bottom: 60px;
+        align-items: center;
+    }
+
+    .mission-content {
+        flex: 1;
+    }
+
+    .mission-content h2 {
+        font-size: 32px;
+        color: var(--text-primary, #fff);
+        margin-bottom: 20px;
+    }
+
+    .mission-content p {
+        color: var(--text-secondary, #b3b3b3);
+        font-size: 16px;
+        line-height: 1.7;
+        margin-bottom: 15px;
+    }
+
+    .mission-image {
+        flex: 1;
+        background: var(--dp-12, #2c2c2c);
+        border-radius: 20px;
+        padding: 40px;
+        text-align: center;
+        border: 1px dashed var(--dp-24, #444);
+    }
+
+    .mission-image i {
+        font-size: 100px;
+        color: var(--accent-color, #007aff);
+        opacity: 0.8;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 60px;
+    }
+
+    .feature-card {
+        background: var(--dp-06, #1e1e1e);
+        padding: 40px 30px;
+        border-radius: 16px;
+        border: 1px solid var(--dp-24, #333);
+        text-align: center;
+        transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--accent-color, #007aff);
+    }
+
+    .feature-icon {
+        width: 70px;
+        height: 70px;
+        background: rgba(0, 122, 255, 0.1);
+        color: var(--accent-color, #007aff);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        margin: 0 auto 20px auto;
+    }
+
+    .feature-card h3 {
+        color: var(--text-primary, #fff);
+        margin-bottom: 15px;
+        font-size: 20px;
+    }
+
+    .feature-card p {
+        color: var(--text-secondary, #b3b3b3);
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .mission-section {
+            flex-direction: column;
+        }
+        .about-hero h1 {
+            font-size: 32px;
+        }
+    }
+</style>
+
+<div class="about-container">
+    
+    <div class="about-hero">
+        <h1>Revolutionizing the <span>Hiring Process</span></h1>
+        <p>We combine the power of Artificial Intelligence with human potential to create the most accurate and seamless job matching experience for both job seekers and employers.</p>
+    </div>
+
+    <div class="mission-section">
+        <div class="mission-content">
+            <h2>Our Mission</h2>
+            <p>Finding the right job or the perfect candidate shouldn't be a game of luck. Our mission is to bridge the gap between talented individuals and top-tier companies using cutting-edge AI technology.</p>
+            <p>By analyzing CVs and understanding the deep context of job requirements, we eliminate the bias and manual effort in traditional hiring, ensuring a perfect match every time.</p>
+        </div>
+        <div class="mission-image">
+            <i class="fas fa-bullseye"></i>
+        </div>
+    </div>
+
+    <h2 style="text-align: center; color: var(--text-primary, #fff); margin-bottom: 40px; font-size: 32px;">Why Choose Us?</h2>
+    
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-brain"></i>
+            </div>
+            <h3>Smart AI Matching</h3>
+            <p>Our advanced Natural Language Processing (NLP) algorithms read your CV just like a human would, finding the jobs that truly fit your skills and experience.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <h3>Skill Gap Analysis</h3>
+            <p>We don't just find you jobs; we help you grow. Our system analyzes your profile against industry standards and suggests the exact skills you need to improve.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-handshake"></i>
+            </div>
+            <h3>Effortless Hiring</h3>
+            <p>For employers, we filter out the noise. Receive a shortlisted ranking of the most qualified candidates, saving you hours of manual resume screening.</p>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

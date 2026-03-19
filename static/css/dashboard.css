@@ -1,0 +1,519 @@
+/* =========================================
+   EMPLOYER DASHBOARD MAIN STYLES
+   ========================================= */
+
+body {
+    padding-top: 0 !important; 
+    overflow: hidden !important; 
+}
+
+.dashboard-layout {
+    display: flex;
+    height: 100vh; 
+    width: 100vw;  
+    padding: 20px;
+    gap: 20px;
+    box-sizing: border-box;
+    margin: 0;
+    max-width: 100%; 
+}
+
+/* --- Sidebar Styles --- */
+.dashboard-sidebar {
+    width: 260px;
+    height: 100%; 
+    background: var(--dp-06);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--dp-24);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 30px 20px;
+    flex-shrink: 0;
+}
+
+.sidebar-top-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.brand-logo {
+    color: var(--text-primary);
+    font-size: 24px;
+    margin-bottom: 40px;
+    padding-left: 10px;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    text-align: left;
+    padding: 12px 15px;
+    border-radius: 12px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.tab-btn i {
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+}
+
+.tab-btn:hover {
+    background: var(--dp-12);
+    color: var(--text-primary);
+}
+
+.tab-btn.active {
+    background: var(--dp-24);
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.logout-btn {
+    color: #ff3b30 !important;
+    text-decoration: none;
+    margin-top: auto;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 59, 48, 0.1);
+}
+
+.sidebar-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mobile-settings { display: none; }
+.desktop-settings { display: flex; }
+
+/* --- Content Area Styles --- */
+.dashboard-content {
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 15px; 
+    padding-bottom: 20px; 
+}
+
+.dashboard-content::-webkit-scrollbar { width: 6px; }
+.dashboard-content::-webkit-scrollbar-thumb { background: var(--dp-24); border-radius: 10px; }
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--dp-06);
+    padding: 20px 30px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--dp-24);
+}
+
+.tab-header h2 {
+    color: var(--text-primary);
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.profile-icon {
+    width: 45px;
+    height: 45px;
+    background: var(--dp-24);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    font-size: 18px;
+}
+
+/* --- Form Styles --- */
+.job-form {
+    background: var(--dp-06);
+    padding: 30px;
+    border-radius: 20px;
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--dp-24);
+}
+
+.form-top-section {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.image-upload-box {
+    width: 140px;
+    height: 140px;
+    background: var(--dp-12);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid transparent;
+    transition: 0.3s;
+}
+
+.image-upload-box:hover {
+    border-color: var(--accent-color);
+}
+
+.image-upload-box label {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 30px;
+}
+
+.image-upload-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0; left: 0;
+}
+
+.basic-info-inputs {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.form-mid-section {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.dash-field-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.dash-field-group label {
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.dash-input {
+    width: 100%;
+    background: var(--dp-12);
+    border: 1px solid transparent !important;
+    padding: 14px 16px;
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.dash-input::placeholder { color: var(--text-secondary); }
+.dash-input:focus { background: var(--dp-24) !important; border-color: var(--accent-color) !important; }
+
+.full-width-input { width: 100%; }
+
+.dash-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    cursor: pointer;
+}
+
+.form-action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--dp-24);
+}
+
+.btn-cancel, .btn-draft, .btn-save {
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+    border: none;
+}
+
+.btn-cancel { background: transparent; color: var(--text-secondary); }
+.btn-cancel:hover { color: var(--text-primary); background: var(--dp-12); }
+
+.btn-draft { background: var(--dp-24); color: var(--text-primary); }
+.btn-draft:hover { background: var(--dp-12); }
+
+.btn-save { background: var(--accent-color); color: #fff; }
+.btn-save:hover { background: var(--accent-hover); }
+
+/* --- Drafts & Closed Jobs Section --- */
+.drafts-section {
+    margin-top: 40px;
+}
+
+.drafts-section h3 {
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.draft-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+}
+
+.draft-card {
+    background: var(--dp-06);
+    border: 1px solid var(--dp-24);
+    padding: 15px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: 0.3s;
+}
+
+.draft-card:hover { transform: translateY(-3px); border-color: var(--text-secondary); }
+
+.draft-file-icon { font-size: 24px; color: var(--text-secondary); }
+
+.draft-title {
+    flex: 1;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.draft-actions { display: flex; gap: 15px; }
+.draft-actions a { color: var(--text-secondary); text-decoration: none; transition: 0.3s; }
+.draft-actions a:hover { color: var(--text-primary); }
+.draft-actions .delete-icon:hover { color: #ff3b30; }
+
+/* Modal */
+.custom-modal {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+}
+
+.custom-modal-content {
+    background: var(--dp-06);
+    border: 1px solid var(--dp-24);
+    padding: 30px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    animation: scaleUp 0.3s ease;
+}
+
+.modal-icon { font-size: 40px; color: #ff3b30; margin-bottom: 15px; }
+.custom-modal-content h3 { color: var(--text-primary); margin-bottom: 10px; font-size: 22px; }
+.custom-modal-content p { color: var(--text-secondary); font-size: 14px; margin-bottom: 25px; }
+.modal-actions { display: flex; justify-content: center; gap: 15px; }
+.btn-delete { background: #ff3b30; color: white; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: 500; transition: 0.3s; }
+.btn-delete:hover { background: #d63026; }
+
+/* Quill Editor Styles */
+.editor-container { margin-top: 25px; }
+.editor-container label { display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 13px; font-weight: 500; }
+.ql-toolbar.ql-snow { border: 1px solid var(--dp-24) !important; background: var(--dp-12); border-top-left-radius: 12px; border-top-right-radius: 12px; }
+.ql-snow .ql-stroke { stroke: var(--text-secondary) !important; }
+.ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill { fill: var(--text-secondary) !important; }
+.ql-snow .ql-picker { color: var(--text-secondary) !important; }
+.ql-container.ql-snow { border: 1px solid var(--dp-24) !important; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; background: var(--dp-06); color: var(--text-primary); font-family: inherit; font-size: 14px; min-height: 150px; }
+.ql-container.ql-snow.ql-active { border-color: var(--accent-color) !important; }
+.ql-editor ul, .ql-editor ol { padding-left: 2em !important; }
+.ql-editor li { margin-bottom: 5px; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scaleUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* =========================================================
+   RESPONSIVE DESIGN FOR DASHBOARD (DESKTOP, TABLET, MOBILE)
+   ========================================================= */
+
+/* --- 1. TABLET VIEW (Max-width: 1024px) --- */
+@media (max-width: 1024px) {
+    .dashboard-sidebar { width: 220px; padding: 20px 15px; }
+    .form-mid-section { grid-template-columns: repeat(2, 1fr); }
+    .draft-items-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+    .tab-btn { font-size: 14px; padding: 10px; }
+}
+
+
+/* --- 2. MOBILE VIEW (Max-width: 768px) --- */
+@media (max-width: 768px) {
+    
+    body { overflow: hidden !important; }
+
+    .dashboard-layout {
+        display: block;
+        padding: 0; 
+        height: 100vh;
+        width: 100vw;
+        overflow-y: auto; 
+    }
+
+    .dashboard-sidebar {
+        position: static !important; 
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        height: auto;
+        width: 100%;
+    }
+
+    .sidebar-top-wrapper { display: block; }
+
+    /* Top Bar (Logo සහ Logout Area) */
+    .sidebar-top {
+        position: fixed;
+        top: 0; left: 0; width: 100%;
+        height: 65px;
+        background: var(--dp-06);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--dp-24);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        z-index: 1001;
+    }
+
+    .brand-logo { margin: 0; font-size: 22px; padding: 0; }
+
+    /* === THE BOTTOM NAV (ගැටලුව නිවැරදි කළ තිරයේ පහළින්ම පෙන්වන මෙනුව) === */
+    .sidebar-nav {
+        position: fixed !important;
+        top: auto !important;     /* MAGIC FIX 1: style.css හි top:0 ඉවත් කරයි */
+        right: auto !important;   /* MAGIC FIX 2: style.css බලපෑම් ඉවත් කරයි */
+        bottom: 0 !important; 
+        left: 0 !important; 
+        width: 100% !important;
+        height: 80px !important;
+        background: var(--dp-06) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
+        border-top: 1px solid var(--dp-24) !important;
+        border-radius: 20px 20px 0 0 !important;
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-around !important;
+        align-items: center !important;
+        padding: 5px 10px 15px 10px !important; 
+        z-index: 2000 !important;
+        opacity: 1 !important;
+    }
+
+    .tab-btn {
+        flex-direction: column !important; 
+        gap: 6px !important;
+        padding: 8px 5px !important;
+        border-radius: 12px !important;
+        width: 65px !important;
+        justify-content: center !important;
+        background: transparent !important; 
+    }
+
+    .tab-btn i { font-size: 20px !important; margin: 0 !important; }
+    .tab-text { font-size: 10px !important; white-space: nowrap !important; }
+
+    .tab-btn.active { color: var(--accent-color) !important; }
+    .tab-btn.active i {
+        transform: translateY(-3px) !important; 
+        transition: transform 0.3s ease !important;
+    }
+
+    /* Top Bar එකට Settings & Logout Buttons යැවීම */
+    .sidebar-bottom {
+        position: fixed;
+        top: 12px; right: 15px; 
+        padding: 0; border: none;
+        display: flex; flex-direction: row; z-index: 1002;
+    }
+
+    .desktop-settings { display: none !important; }
+    .mobile-settings { display: flex !important; } 
+
+    .logout-btn {
+        color: #ff3b30 !important;
+        padding: 8px 14px; border-radius: 10px;
+        flex-direction: row; gap: 8px; height: 40px; width: auto;
+    }
+    .logout-btn i { font-size: 16px; }
+    .logout-btn .tab-text { font-size: 13px; font-weight: 600; }
+
+    /* Main Content Area */
+    .dashboard-content { padding: 85px 15px 100px 15px; height: auto; overflow: visible; }
+    .tab-header { border-radius: 12px; padding: 15px 20px; }
+    .job-form { padding: 20px 15px; }
+    .form-top-section { flex-direction: column; align-items: center; }
+    .basic-info-inputs { width: 100%; }
+    .form-mid-section { grid-template-columns: 1fr; }
+    .form-action-buttons { flex-direction: column; gap: 10px; }
+    .form-action-buttons button, .form-action-buttons a { width: 100%; text-align: center; }
+    .draft-items-grid { grid-template-columns: 1fr; }
+    #settings-tab .job-form > div:first-child { flex-direction: column; text-align: center; }
+    #settings-tab .job-form > div:first-child > div:last-child { grid-template-columns: 1fr; width: 100%; }
+    form[action="/employer/reactivate-job"] { flex-direction: column !important; align-items: stretch !important; }
+    form[action="/employer/reactivate-job"] button { margin-top: 10px !important; width: 100%; }
+    .ql-toolbar { white-space: nowrap; overflow-x: auto; }
+}

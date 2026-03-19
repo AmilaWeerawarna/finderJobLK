@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ 'Edit' if edit_job else 'Add' }} Job Post</title>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <style>
+        .content { background: var(--bg-main); }
+        .tab-header h2 { color: var(--text-primary); margin-bottom: 20px;}
+        .dash-input, .quill-editor { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color); }
+        .ql-toolbar { background: #e0e0e0; }
+    </style>
+</head>
+<body class="dark-theme">
+
+    <div class="dashboard-container">
+        <aside class="sidebar sub-sidebar">
+            <h2 class="logo">Logo</h2>
+            <nav class="menu">
+                <a href="/admin/manage_employers/pending">Pending Verify</a>
+                <a href="/admin/manage_employers/verified" class="active">Verified Employers</a>
+                <a href="/admin/manage_employers/rejected">Rejected Employers</a>
+            </nav>
+            <div class="sidebar-bottom">
+                <a href="/logout">🚪 Log Out</a>
+            </div>
+        </aside>
+
+        <main class="content">
+            <header class="back-header">
+                <a href="/admin/manage_employers/verified/{{ employer_id }}" class="back-btn">←</a>
+                <h2>Manage Employers</h2>
+            </header>
+
+            <div class="tab-header">
+                <h2>{{ 'Edit Job Post' if edit_job else 'Add New Job Post' }}</h2>
+            </div>
+
+            <form action="/admin/manage_employers/verified/job_action" method="POST" enctype="multipart/form-data" class="job-form">
+                
+                <input type="hidden" name="employer_id" value="{{ employer_id }}">
+                <input type="hidden" name="job_id" value="{{ edit_job._id if edit_job else '' }}">
+
+                <div class="form-top-section">
+                    {% set image_file = edit_job.get('job_image') if edit_job else None %}
+                    
+                    <div class="image-upload-box" style="background: var(--bg-card); width: 150px; height: 150px; border-radius: 10px; display: flex; justify-content: center; align-items: center; position: relative; cursor: pointer;" onclick="document.getElementById('job_image').click();">
+                        <span id="cameraIcon" style="font-size: 30px; color: var(--text-secondary); display: {{ 'none' if image_file else 'block' }};">📷</span>
+                        <img id="imagePreview" src="{{ url_for('static', filename='company_logos/' + image_file) if image_file else '' }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px; display: {{ 'block' if image_file else 'none' }};">
+                        <input type="file" id="job_image" name="job_image" accept="image/*" hidden onchange="previewImage(event)">
+                    </div>
+                    
+                    <div class="basic-info-inputs">
+                        <input type="text" name="job_title" class="dash-input" placeholder="Job Title" value="{{ edit_job.get('job_title', '') if edit_job else '' }}" required>
+                        <input type="text" name="company_name" class="dash-input" placeholder="Company Name" value="{{ edit_job.get('company_name', company_name) if edit_job else company_name }}" required>
+                        <input type="text" name="location" class="dash-input" placeholder="Location" value="{{ edit_job.get('location', '') if edit_job else '' }}" required>
+                    </div>
+                </div>
+
+                <div class="form-mid-section">
+                    <div class="dash-field-group">
+                        <label>Start Date</label>
+                        <input type="date" name="start_date" class="dash-input" value="{{ edit_job.get('start_date', '') if edit_job else '' }}">
+                    </div>
+                    <div class="dash-field-group">
+                        <label>End Date</label>
+                        <input type="date" name="end_date" class="dash-input" value="{{ edit_job.get('end_date', '') if edit_job else '' }}">
+                    </div>
+                    <div class="dash-field-group">
+                        <label>Salary Range</label>
+                        <input type="text" name="salary" class="dash-input" placeholder="e.g. 50000 - 80000" value="{{ edit_job.get('salary', '') if edit_job else '' }}">
+                    </div>
+                    <div class="dash-field-group">
+                        <label>Employment Type</label>
+                        <select name="employment_type" class="dash-input dash-select">
+                            <option value="">Employment type</option>
+                            <option value="Full-time" {% if edit_job and edit_job.get('employment_type') == 'Full-time' %}selected{% endif %}>Full-time</option>
+                            <option value="Part-time" {% if edit_job and edit_job.get('employment_type') == 'Part-time' %}selected{% endif %}>Part-time</option>
+                            <option value="Contract" {% if edit_job and edit_job.get('employment_type') == 'Contract' %}selected{% endif %}>Contract</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="dash-field-group" style="margin-top: 20px;">
+                    <label>Category</label>
+                    <input type="text" name="category" class="dash-input full-width-input" placeholder="Category" value="{{ edit_job.get('category', '') if edit_job else '' }}">
+                </div>
+
+                <div class="editor-container" style="margin-top: 20px;">
+                    <label>Job Duties</label>
+                    <div id="editor_job_duties" class="quill-editor" style="height: 150px;">{{ edit_job.get('job_duties', '') | safe if edit_job else '' }}</div>
+                    <input type="hidden" name="job_duties" id="hidden_job_duties">
+                </div>
+
+                <div class="editor-container" style="margin-top: 20px;">
+                    <label>Job Requirement</label>
+                    <div id="editor_job_requirement" class="quill-editor" style="height: 150px;">{{ edit_job.get('job_requirement', '') | safe if edit_job else '' }}</div>
+                    <input type="hidden" name="job_requirement" id="hidden_job_requirement">
+                </div>
+
+                <div class="editor-container" style="margin-top: 20px;">
+                    <label>Job Skills & Qualifications</label>
+                    <div id="editor_skills" class="quill-editor" style="height: 150px;">{{ edit_job.get('skills', '') | safe if edit_job else '' }}</div>
+                    <input type="hidden" name="skills" id="hidden_skills">
+                </div>
+                
+                <div class="form-action-buttons" style="margin-top: 30px; display: flex; gap: 15px; justify-content: flex-end;">
+                    <a href="/admin/manage_employers/verified/{{ employer_id }}" class="btn-cancel" style="padding: 10px 20px; background: #666; color: white; text-decoration: none; border-radius: 5px;">Cancel</a>
+                    <button type="submit" name="action" value="save" class="btn-save" style="padding: 10px 20px; background: white; color: black; border: none; border-radius: 5px; cursor: pointer;">{{ 'Update Job' if edit_job else 'Add Job' }}</button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                const output = document.getElementById('imagePreview');
+                output.src = reader.result;
+                output.style.display = 'block';
+                document.getElementById('cameraIcon').style.display = 'none';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var toolbarOptions = [
+                ['bold', 'italic', 'underline'], 
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'size': ['small', false, 'large', 'huge'] }],
+                ['clean'] 
+            ];
+
+            var quillDuties = new Quill('#editor_job_duties', { theme: 'snow', modules: { toolbar: toolbarOptions } });
+            var quillReq = new Quill('#editor_job_requirement', { theme: 'snow', modules: { toolbar: toolbarOptions } });
+            var quillSkills = new Quill('#editor_skills', { theme: 'snow', modules: { toolbar: toolbarOptions } });
+
+            var form = document.querySelector('.job-form');
+            if(form) {
+                form.addEventListener('submit', function() {
+                    document.getElementById('hidden_job_duties').value = quillDuties.root.innerHTML;
+                    document.getElementById('hidden_job_requirement').value = quillReq.root.innerHTML;
+                    document.getElementById('hidden_skills').value = quillSkills.root.innerHTML;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

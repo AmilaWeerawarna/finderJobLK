@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buildly – AI App Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div id="preloader">
+    <div class="loader-ring"></div>
+    <i class="fas fa-brain loader-icon"></i> 
+</div>
+
+  
+
+<div class="glow-bg">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+</div>
+
+<header>
+
+  <a href="/" class="logo" >FinderJobLK</a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <nav id="navMenu">
+    <span><a href="/about">About us</a></span>
+    <span><a href="/contact">Contact us</a></span>
+    <span><a href="/faq">FAQ</a></span>
+    <div class="nav-mobile-actions">
+      {% if session.user_email %}
+        <div class="profile-footer">
+          <a href="/logout" class="logout">Logout</a>
+        </div>
+      {%else%}
+        <a href="/register"><button class="btn-outline">Sign in</button></a>
+        <a href="/login"><button class="btn-primary">Get Started</button></a>
+      {% endif %}
+    </div>
+  </nav>
+  <div class="nav-actions">
+    {% if session.user_email %}
+
+        <div class="profile-wrapper">
+          <div class="profile-trigger" id="profileTrigger">
+              <img src="{{ url_for('static', filename='profile_img/' + session.profile_image) if session.profile_image else 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/960px-Windows_10_Default_Profile_Picture.svg.png' }}" alt="Profile" class="profile-avatar">
+          </div>
+
+          <div class="profile-dropdown" id="profileDropdown">
+              <div class="profile-header">
+                  <div class="avatar-circle">
+                    <img src="{{ url_for('static', filename='profile_img/' + session.profile_image) if session.profile_image else 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/960px-Windows_10_Default_Profile_Picture.svg.png' }}" alt="Profile" class="profile-avatar">
+                  </div>
+                  <div class="profile-info">
+                      <strong>Amila Weerawarna</strong>
+                      <span>amilaweerawarna@gmail.com</span>
+                  </div>
+              </div>
+
+              <ul class="profile-menu">
+                  <li><a href="/profile">Profile</a></li>
+              </ul>
+
+              <div class="profile-footer">
+                  <a href="/logout" class="logout">Logout</a>
+              </div>
+          </div>
+      </div>
+    {% else %}
+        <a href="/register"><button class="btn-outline">Sign in</button></a>
+        <a href="/login"><button class="btn-primary">Get Started</button></a>
+    {% endif %}
+  </div>
+
+
+
+</header>
+
+  <div id="toast-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div class="toast-message toast-{{ category }}">
+            <div class="toast-icon">
+              {% if category == 'success' %}
+                <i class="fas fa-check-circle"></i>
+              {% elif category == 'danger' or category == 'error' %}
+                <i class="fas fa-exclamation-circle"></i>
+              {% else %}
+                <i class="fas fa-info-circle"></i>
+              {% endif %}
+            </div>
+            <div class="toast-content">{{ msg }}</div>
+            <button class="toast-close" onclick="this.parentElement.style.display='none'">&times;</button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  {% block content %}{% endblock %}
+
+<footer class="site-footer">
+
+     <p class="copyright">
+      Copyright @ 2026 All right reserved | This is made by FinderJobLK.com
+    </p>
+
+</footer>
+
+
+<script>
+    // 🟢 පේජ් එක සම්පූර්ණයෙන්ම ලෝඩ් වූ පසු Preloader එක සැඟවීම සහ ඉවත් කිරීම
+    window.addEventListener('load', function() {
+        const preloader = document.getElementById('preloader');
+        
+        if (preloader) {
+            // පළමුව Opacity 0 කර මැකී යාමට සැලැස්වීම
+            preloader.style.opacity = '0';
+            
+            // මිලි තත්පර 600 කට පසු (Animation එක අවසන් වූ පසු) එය සම්පූර්ණයෙන්ම ඉවත් කිරීම
+            setTimeout(() => {
+                preloader.style.display = 'none';
+                preloader.remove(); 
+            }, 600); 
+        }
+    });
+</script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

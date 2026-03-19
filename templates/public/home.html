@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+<section class="upload-hero-section">
+  
+  <div class="upload-hero-left">
+    <h1>AI Job Matcher</h1>
+    <p class="subtitle">Convert your CV into job offers easily!</p>
+    
+    <ul class="feature-list">
+      <li>
+        <div class="icon-circle"><i class="fas fa-check"></i></div>
+        Extract skills and experience instantly
+      </li>
+      <li>
+        <div class="icon-circle"><i class="fas fa-check"></i></div>
+        Match with 10,000+ active job posts
+      </li>
+      <li>
+        <div class="icon-circle"><i class="fas fa-check"></i></div>
+        Get detailed ATS optimization feedback
+      </li>
+    </ul>
+
+    <div class="support-info">
+      +94 (77) 123-4567 | Phone Support 24/7 | Email Support 24/7
+    </div>
+  </div>
+
+  <div class="upload-hero-right">
+    <form action="{{ url_for('match.match_jobs') }}" method="POST" enctype="multipart/form-data" id="cvUploadForm">
+      <div class="upload-card">
+        <h3>Upload your files</h3>
+        
+        <div class="upload-illustration">
+          <img src="https://cdn-icons-png.flaticon.com/512/3143/3143460.png" alt="PDF Upload" width="80">
+        </div>
+        
+        <p class="drop-text">Drop PDF files here</p>
+        
+        <div class="divider">
+          <span>OR</span>
+        </div>
+        
+        <label class="btn-upload-red" id="uploadLabel">
+          Upload to Match
+          <input type="file" name="cv_pdf" id="pdfUpload" accept="application/pdf" hidden required />
+        </label>
+        
+        <div id="fileSelectedBox" style="display: none;">
+            <p class="file-name-display" id="pdfFileName"><i class="fas fa-file-pdf"></i> <span></span></p>
+            <button type="submit" class="btn-primary" id="matchBtn" style="width: 100%; margin-bottom:15px;">Analyze & Find Jobs</button>
+            <button type="button" id="removePdfBtn" class="btn-outline" style="width: 100%;">Cancel</button>
+        </div>
+        </div>
+
+        <p class="upload-hint">Upload documents up to 10 MB in PDF</p>
+      </div>
+    </form>
+  </div>
+
+</section>
+
+<div class="stats-container" style="max-width: 1000px; margin: 0 auto 80px; display: flex; justify-content: space-around; text-align: center;">
+  
+  <div class="stat-item" style="display: flex; flex-direction: column; align-items: center;">
+      <span class="stat-label" style="color: var(--text-secondary); margin-bottom: 10px;">Job Posts</span>
+      <div style="display: flex; align-items: center; justify-content: center;">
+          <span class="stat-value counter" data-target="{{ jobs_count }}" style="font-size: 40px; font-weight: bold; color: var(--text-primary);">0</span>
+          <span style="font-size: 40px; font-weight: bold; color: var(--accent-color);">+</span>
+      </div>
+  </div>
+
+  <div class="stat-item" style="display: flex; flex-direction: column; align-items: center;">
+      <span class="stat-label" style="color: var(--text-secondary); margin-bottom: 10px;">Job Seekers</span>
+      <div style="display: flex; align-items: center; justify-content: center;">
+          <span class="stat-value counter" data-target="{{ seekers_count }}" style="font-size: 40px; font-weight: bold; color: var(--text-primary);">0</span>
+          <span style="font-size: 40px; font-weight: bold; color: var(--accent-color);">+</span>
+      </div>
+  </div>
+
+  <div class="stat-item" style="display: flex; flex-direction: column; align-items: center;">
+      <span class="stat-label" style="color: var(--text-secondary); margin-bottom: 10px;">Employers</span>
+      <div style="display: flex; align-items: center; justify-content: center;">
+          <span class="stat-value counter" data-target="{{ employers_count }}" style="font-size: 40px; font-weight: bold; color: var(--text-primary);">0</span>
+          <span style="font-size: 40px; font-weight: bold; color: var(--accent-color);">+</span>
+      </div>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const counters = document.querySelectorAll('.counter');
+    const speed = 50; 
+
+    counters.forEach(counter => {
+        const updateCount = () => {
+            const target = +counter.getAttribute('data-target');
+            const count = +counter.innerText;
+            const increment = target / speed;
+
+            if (count < target) {
+                counter.innerText = Math.ceil(count + increment);
+                setTimeout(updateCount, 30);
+            } else {
+                counter.innerText = target;
+            }
+        };
+
+        updateCount();
+    });
+});
+</script>
+
+{% endblock %}

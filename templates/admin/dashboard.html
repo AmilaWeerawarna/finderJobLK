@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_style.css') }}">
+</head>
+<body class="dark-theme">
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <h2 class="logo">FinderJobLK</h2>
+            <nav class="menu">
+                <a href="/admin/dashboard" class="active">Dashboard</a>
+                <a href="/admin/manage_employers">Manage Employers</a>
+                <a href="/admin/manage_job_seekers">Manage Job Seekers</a>
+                <a href="/admin/messages" class="{% if request.path == '/admin/messages' %}active{% endif %}">
+                    <span>Message</span>
+                    {% if unread_count > 0 %}
+                        <span class="notif-badge">{{ unread_count }}</span>
+                    {% endif %}
+                </a>    
+            </nav>
+            <div class="sidebar-bottom">
+                <a href="/logout">🚪 Log Out</a>
+            </div>
+        </aside>
+
+        <main class="content">
+            <header class="top-header">
+                <div class="header-title">Dashboard</div>
+            </header>
+
+            <section class="stats-cards">
+                <div class="card">
+                    <h3>{{ stats.all_jobs }}</h3>
+                    <p>All Job Posts</p>
+                </div>
+                <div class="card">
+                    <h3>{{ stats.employers }}</h3>
+                    <p>All Employers</p>
+                </div>
+                <div class="card">
+                    <h3>{{ stats.job_seekers }}</h3>
+                    <p>All Job Seekers</p>
+                </div>
+                <div class="card">
+                    <h3>{{ stats.closed_jobs }}</h3>
+                    <p>Close Job Post</p>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <section class="charts-area">
+                <div class="chart-box">
+                    <h3>User Distribution</h3>
+                    <div class="canvas-container">
+                        <canvas id="userChart" style="width: 280px;"></canvas>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <h3>Job Posts Overview</h3>
+                    <div class="canvas-container">
+                        <canvas id="jobChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            Chart.defaults.color = '#b3b3b3';
+            Chart.defaults.borderColor = '#444444';
+
+            // 1. User Distribution Chart (Doughnut)
+            const userCtx = document.getElementById('userChart').getContext('2d');
+            new Chart(userCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Employers', 'Job Seekers'],
+                    datasets: [{
+                        data: [
+                            {{ chart_data.employers_count|default(0) }}, 
+                            {{ chart_data.job_seekers_count|default(0) }}
+                        ],
+                        backgroundColor: [
+                            '#4CAF50', 
+                            '#2196F3'  
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            // 2. Job Posts Overview Chart (Bar)
+            const jobCtx = document.getElementById('jobChart').getContext('2d');
+            new Chart(jobCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Active Jobs', 'Drafts', 'Closed Jobs'],
+                    datasets: [{
+                        label: 'Number of Jobs',
+                        data: [
+                            {{ chart_data.active_jobs_count|default(0) }}, 
+                            {{ chart_data.draft_jobs_count|default(0) }}, 
+                            {{ chart_data.closed_jobs_count|default(0) }}
+                        ],
+                        backgroundColor: [
+                            '#FFC107', 
+                            '#9E9E9E', 
+                            '#F44336'  
+                        ],
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false } 
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#333333' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        });
+</script>
+</body>
+
+</html>
+
